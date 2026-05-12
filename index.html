@@ -5,26 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JHOL | Strategy Architecture</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- GSAP & Plugins -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
-    <!-- Lenis (Smooth Scroll) -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
-    <!-- Matter.js (2D Physics Engine) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 
-    <!-- Fonts: Dr Sugiyama (Signature/Graffiti) + Inter (Clinical UI) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dr+Sugiyama&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dr+Sugiyama&family=Inter:wght@400;600;700;800;900&family=Kaushan+Script&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -37,12 +31,17 @@
             --font-main: 'Inter', Arial, sans-serif;
         }
 
+        .font-cursive {
+            font-family: 'Kaushan Script', cursive;
+            font-weight: 400;
+        }
+
         body {
             font-family: var(--font-main);
             background-color: var(--jhol-black);
             color: var(--jhol-beige);
             margin: 0;
-            overflow-x: hidden;
+            overflow-x: clip;
             -webkit-font-smoothing: antialiased;
             font-weight: 600; 
         }
@@ -108,11 +107,22 @@
         .spatial-card {
             will-change: transform, opacity, filter;
         }
+
+        .ledger-bar-container {
+            height: 12px;
+            background: var(--jhol-beige-dark);
+            border: 2px solid var(--jhol-black);
+            width: 100%;
+            overflow: hidden;
+        }
+        .ledger-bar-fill {
+            height: 100%;
+            background: var(--jhol-orange);
+        }
     </style>
 </head>
 <body class="selection:bg-[var(--jhol-orange)] selection:text-[var(--jhol-black)]">
 
-    <!-- Preloader Layers -->
     <div id="preloader-bg" class="fixed inset-0 bg-[var(--jhol-black)] z-[9999] pointer-events-none will-change-opacity"></div>
     <div id="preloader-content" class="fixed inset-0 flex flex-col justify-center items-center z-[10000] pointer-events-none w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 overflow-hidden">
         <div class="w-full flex flex-col text-[var(--jhol-beige)] font-['Inter'] font-[900] leading-[1.0] tracking-[-0.04em] uppercase text-[7vw] lg:text-[100px] pt-10">
@@ -147,7 +157,6 @@
         </div>
     </div>
 
-    <!-- CAD Drafting Cursor -->
     <div id="cad-cursor-container">
         <div id="cad-line-x"></div>
         <div id="cad-line-y"></div>
@@ -155,50 +164,41 @@
         <div id="cad-coords">X:0000 Y:0000</div>
     </div>
 
-    <!-- Floating Brutalist Nav -->
     <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-max pointer-events-none opacity-0" id="main-nav-container">
         <nav class="nav-brutal pointer-events-auto" id="main-nav">
             <div class="nav-indicator" id="nav-indicator"></div>
             <a href="#hero" class="nav-item active cursor-hover">Genesis</a>
             <a href="#void" class="nav-item cursor-hover">The Story</a>
             <a href="#capital" class="nav-item cursor-hover">Capital Stack</a>
+            <a href="#gtm" class="nav-item cursor-hover">GTM Matrix</a>
             <a href="#veto" class="nav-item cursor-hover">The Veto</a>
             <a href="#products" class="nav-item cursor-hover">Portfolio</a>
         </nav>
     </div>
 
-    <!-- Top Ribbon -->
     <header id="top-ribbon" class="fixed top-0 left-0 w-full z-40 h-12 flex border-b-[3px] border-[var(--jhol-orange)] bg-[var(--jhol-black)] text-[10px] md:text-xs font-extrabold uppercase tracking-widest text-[var(--jhol-orange)] opacity-0 pointer-events-none -translate-y-4">
-        <div class="flex items-center justify-center px-8 bg-[var(--jhol-orange)] text-[var(--jhol-black)] border-r-[3px] border-[var(--jhol-orange)] pointer-events-auto cursor-hover">
-            JHOL.
+        <div class="flex items-center justify-center px-4 bg-[var(--jhol-orange)] border-r-[3px] border-[var(--jhol-orange)] pointer-events-auto h-full">
+            <img src="ChatGPT%20Image%20May%2013,%202026,%2002_21_02%20AM.jpg" alt="JHOL Logo" class="h-10 object-contain transform -rotate-1">
         </div>
-        <div class="hidden md:flex pointer-events-auto">
-            <a href="#void" class="flex items-center justify-center px-6 border-r-[3px] border-[var(--jhol-orange)] hover:bg-[rgba(255,69,0,0.1)] transition-colors cursor-hover">01. Origin & Hack</a>
-            <a href="#capital" class="flex items-center justify-center px-6 border-r-[3px] border-[var(--jhol-orange)] hover:bg-[rgba(255,69,0,0.1)] transition-colors cursor-hover">02. Execution</a>
-            <a href="#veto" class="flex items-center justify-center px-6 border-r-[3px] border-[var(--jhol-orange)] hover:bg-[rgba(255,69,0,0.1)] transition-colors cursor-hover">03. The Veto</a>
-            <a href="#products" class="flex items-center justify-center px-6 border-r-[3px] border-[var(--jhol-orange)] hover:bg-[rgba(255,69,0,0.1)] transition-colors cursor-hover">04. Products</a>
+        <div class="flex-grow flex items-center justify-center pointer-events-auto tracking-[0.2em] md:tracking-[0.4em] opacity-90 h-full text-[10px] md:text-sm font-black">
+            THE NATIVE JUNK SOLUTION
         </div>
-        <div class="flex-grow pointer-events-auto"></div>
-        <div class="flex items-center justify-center px-6 bg-[var(--jhol-orange)] text-[var(--jhol-black)] border-l-[3px] border-[var(--jhol-orange)] pointer-events-auto">
+        <div class="flex items-center justify-center px-6 bg-[var(--jhol-orange)] text-[var(--jhol-black)] border-l-[3px] border-[var(--jhol-orange)] pointer-events-auto h-full">
             VOL. 2026
         </div>
     </header>
 
     <main class="pt-0">
         
-        <!-- 1. HERO -->
         <section id="hero" class="h-screen w-full relative overflow-hidden bg-[#130E0C] cursor-none flex flex-col items-center justify-center border-b-grid" style="perspective: 1200px;">
             
             <div id="hero-bg-target" class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                <img src="ChatGPT%20Image%20May%2013,%202026,%2001_00_50%20AM.jpg" onerror="this.src='https://images.unsplash.com/photo-1600857062241-98e5dba7f214?q=80&w=2073&auto=format&fit=crop'" class="absolute inset-0 w-full h-full object-cover opacity-0 scale-110 will-change-transform" id="hero-main-img" alt="Spicy Snacks Background">
                 <div class="absolute inset-0 bg-[#130E0C] opacity-70"></div>
             </div>
             <div id="hero-lighting" class="absolute inset-0 z-[1] opacity-0 pointer-events-none"></div>
 
-            <!-- Clean Cinematic Radial Glow -->
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,69,0,0.15)_0%,transparent_60%)] z-[5] pointer-events-none"></div>
 
-            <!-- Tactical UI Badges (Top Left) -->
             <div class="absolute top-20 left-6 md:left-12 flex flex-col gap-2 z-30 opacity-0 hero-ui-fade">
                 <div class="border-[2px] border-[var(--jhol-orange)] text-[var(--jhol-orange)] px-3 py-1.5 text-[10px] md:text-xs font-black uppercase tracking-widest bg-[#130E0C] shadow-[4px_4px_0_var(--jhol-orange)] w-max">
                     > System: Active_
@@ -208,34 +208,18 @@
                 </div>
             </div>
 
-            <!-- Classified Nutritional Sticker (Top Right) -->
-            <div class="absolute top-20 right-8 md:right-16 bg-white border-[3px] border-[var(--jhol-black)] p-4 w-40 md:w-48 shadow-[6px_6px_0_var(--jhol-orange)] z-30 transform rotate-3 opacity-0 hero-ui-fade hidden sm:block">
-                <div class="font-black text-sm md:text-base uppercase border-b-2 border-[var(--jhol-black)] pb-1 mb-2 leading-tight">Nutrition<br>Facts</div>
-                
-                <div class="bg-[var(--jhol-orange)] text-[var(--jhol-black)] font-black text-lg md:text-xl text-center border-[3px] border-[var(--jhol-black)] transform -rotate-6 mt-4 mb-3 py-1 shadow-[2px_2px_0_var(--jhol-black)]">
-                    CLASSIFIED
-                </div>
-                
-                <div class="text-[9px] md:text-[10px] font-bold flex justify-between mt-2 text-gray-400 uppercase tracking-wider"><span>Palm Oil</span><span>0G</span></div>
-                <div class="text-[9px] md:text-[10px] font-bold flex justify-between text-gray-400 uppercase tracking-wider mt-1"><span>Maltodex</span><span>0%</span></div>
-            </div>
-
-            <!-- Main Center Typography Lockup -->
             <div id="hero-text-wrapper" class="relative z-20 flex flex-col items-center justify-center w-full px-4 pointer-events-none">
                 
-                <!-- Tagline -->
                 <div class="overflow-hidden mb-2">
                     <p class="font-['Inter'] font-black text-2xl md:text-4xl lg:text-5xl text-white uppercase tracking-tighter text-center hero-text-slide opacity-0">
                         Looks Illegal. <span class="text-[var(--jhol-orange)]">Eats Clean.</span>
                     </p>
                 </div>
 
-                <!-- Massive Logo -->
-                <h1 id="hero-text-3d" class="relative font-['Inter'] text-[var(--jhol-beige)] leading-none flex items-baseline pointer-events-auto cursor-hover opacity-0 will-change-transform font-black tracking-tighter mix-blend-normal" style="font-size: clamp(120px, 25vw, 400px); transform-origin: center center; -webkit-text-stroke: 2px var(--jhol-black);">
-                    JHOL<span class="text-[var(--jhol-orange)]">.</span>
-                </h1>
+                <div id="hero-text-3d" class="relative pointer-events-auto cursor-hover opacity-0 will-change-transform mix-blend-normal text-center pt-8 md:pt-12 w-full px-4 flex justify-center" style="transform-origin: center center;">
+                    <img src="ChatGPT%20Image%20May%2013,%202026,%2002_21_02%20AM.jpg" alt="JHOL Logo" class="w-full max-w-[85vw] md:max-w-2xl lg:max-w-4xl object-contain transform -rotate-2 drop-shadow-2xl">
+                </div>
 
-                <!-- Manifesto Block -->
                 <div class="mt-8 md:mt-12 border-[3px] border-[var(--jhol-orange)] bg-[#130E0C] px-6 py-4 md:py-5 hero-ui-fade opacity-0 max-w-xl mx-auto text-center pointer-events-auto shadow-[8px_8px_0_var(--jhol-orange)]">
                     <p class="font-bold text-[9px] md:text-[11px] text-[var(--jhol-beige)] uppercase tracking-[0.2em] leading-[2.0]">
                         The Ultimate <span class="text-[var(--jhol-orange)] font-black">₹60</span> Nutritional Scam.<br>
@@ -245,7 +229,6 @@
                 </div>
             </div>
 
-            <!-- Caution Tape Bottom -->
             <div class="absolute bottom-0 md:bottom-8 w-[110vw] bg-[var(--jhol-orange)] text-[var(--jhol-black)] py-2 md:py-3 font-black text-[10px] md:text-xs uppercase tracking-widest z-30 transform rotate-[-2deg] flex overflow-hidden border-y-[4px] border-[var(--jhol-black)] hero-ui-fade opacity-0 left-[-5vw]">
                 <div class="whitespace-nowrap flex animate-[ticker_10s_linear_infinite] w-max">
                     <span>/// PARENTAL ADVISORY: ZERO JUNK ///</span><span class="mx-4 md:mx-8"></span>
@@ -258,10 +241,8 @@
 
         </section>
 
-        <!-- 2. SPATIAL STORY & HACK CARDS -->
         <section id="void" class="py-24 flex flex-col items-center justify-start border-b-grid relative z-10 bg-[var(--jhol-beige)] overflow-visible w-full pb-[20vh]">
             
-            <!-- Floating Ingredients -->
             <img src="https://cdn-icons-png.flaticon.com/512/3039/3039401.png" alt="Spice" class="floating-ingredient absolute top-[10%] left-[5%] w-24 h-24 opacity-30 rotate-12 pointer-events-none">
             <img src="https://cdn-icons-png.flaticon.com/512/824/824040.png" alt="Grain" class="floating-ingredient absolute bottom-[20%] right-[5%] w-32 h-32 opacity-20 -rotate-12 pointer-events-none" style="animation-delay: -2s;">
 
@@ -269,46 +250,45 @@
 
             <div id="spatial-card-container" class="w-full max-w-4xl mx-auto relative px-4" style="perspective: 1500px;">
                 
-                <!-- Card 1: Origin -->
-                <div class="spatial-card w-full bg-[var(--jhol-beige-dark)] border-[4px] border-[var(--jhol-black)] p-8 md:p-12 shadow-[16px_16px_0_var(--jhol-black)] mb-[40vh] flex flex-col justify-center min-h-[40vh] transform rotate-[-1deg]">
-                    <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter text-[var(--jhol-orange)] mb-6 leading-none">It Started at 4:00 PM.</h2>
-                    <p class="font-bold text-xl md:text-3xl leading-relaxed text-[var(--jhol-black)]">
-                        I watched my 8-year-old niece get off the school bus. Her mother packed a perfect baked ragi snack. <span class="line-through decoration-[var(--jhol-orange)] decoration-4 opacity-70">She didn’t touch it.</span><br><br>
-                        Instead, she pulled out a neon-orange ₹20 packet of legacy chips she traded for at school.
-                    </p>
+                <div class="sticky top-[100px] w-full mb-[40vh] z-10 spatial-wrapper">
+                    <div class="spatial-card w-full bg-[var(--jhol-beige-dark)] border-[4px] border-[var(--jhol-black)] p-8 md:p-12 shadow-[16px_16px_0_var(--jhol-black)] flex flex-col justify-center min-h-[40vh] transform rotate-[-1deg] origin-top">
+                        <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter text-[var(--jhol-orange)] mb-6 leading-none">It Started at 4:00 PM.</h2>
+                        <p class="font-bold text-xl md:text-3xl leading-relaxed text-[var(--jhol-black)]">
+                            I watched my 8-year-old niece get off the school bus. Her mother packed a perfect baked ragi snack. <span class="line-through decoration-[var(--jhol-orange)] decoration-4 opacity-70">She didn’t touch it.</span><br><br>
+                            Instead, she pulled out a neon-orange ₹20 packet of legacy chips she traded for at school.
+                        </p>
+                    </div>
                 </div>
 
-                <!-- Card 2: The Void -->
-                <div class="spatial-card w-full bg-[#130E0C] border-[4px] border-[var(--jhol-orange)] p-8 md:p-12 shadow-[16px_16px_0_var(--jhol-orange)] mb-[40vh] flex flex-col justify-center min-h-[40vh] transform rotate-[1.5deg]">
-                    <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-[var(--jhol-beige)] mb-6 leading-none">"It looks like baby food."</h2>
-                    <p class="font-bold text-xl md:text-2xl leading-relaxed text-[var(--jhol-beige)] opacity-80">
-                        Kids are ruthless about playground social currency. You cannot feed an 8-year-old an earnest, pastel-packaged health snack.<br><br>
-                        <span class="text-[var(--jhol-orange)] text-2xl md:text-4xl block mt-4 bg-[var(--jhol-black)] inline-block p-2 border-l-[4px] border-[var(--jhol-orange)] shadow-[4px_4px_0_rgba(255,69,0,0.3)]">The ₹2,500Cr void demands a Trojan Horse.</span>
-                    </p>
+                <div class="sticky top-[115px] w-full mb-[40vh] z-20 spatial-wrapper">
+                    <div class="spatial-card w-full bg-[#130E0C] border-[4px] border-[var(--jhol-orange)] p-8 md:p-12 shadow-[16px_16px_0_var(--jhol-orange)] flex flex-col justify-center min-h-[40vh] transform rotate-[1.5deg] origin-top">
+                        <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-[var(--jhol-beige)] mb-6 leading-none">"It looks like baby food."</h2>
+                        <p class="font-bold text-xl md:text-2xl leading-relaxed text-[var(--jhol-beige)] opacity-80">
+                            Kids are ruthless about playground social currency. You cannot feed an 8-year-old an earnest, pastel-packaged health snack.<br><br>
+                            <span class="text-[var(--jhol-orange)] text-2xl md:text-4xl block mt-4 bg-[var(--jhol-black)] inline-block p-2 border-l-[4px] border-[var(--jhol-orange)] shadow-[4px_4px_0_rgba(255,69,0,0.3)]">The ₹2,500Cr void demands a Trojan Horse.</span>
+                        </p>
+                    </div>
                 </div>
 
-                <!-- Card 3: The Hack & Scratch Interactive -->
-                <div class="spatial-card w-full bg-[var(--jhol-orange)] border-[4px] border-[var(--jhol-black)] p-8 md:p-12 shadow-[16px_16px_0_var(--jhol-black)] mb-10 flex flex-col justify-center min-h-[50vh] transform rotate-[-0.5deg]">
-                    <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter text-[var(--jhol-black)] mb-4 leading-none">The Hack</h2>
-                    <p class="font-bold text-xl md:text-2xl leading-relaxed text-[var(--jhol-black)] mb-8 opacity-90">
-                        We take 100% grandmother-approved ingredients (Jowar, Spices) and extrude them into high-crunch, western-style junk food formats. 
-                    </p>
-                    
-                    <!-- Scratch Canvas Block -->
-                    <div class="relative w-full h-[180px] md:h-[220px] border-[4px] border-[var(--jhol-black)] shadow-[8px_8px_0_var(--jhol-beige)] bg-[var(--jhol-beige-dark)] group flex items-center justify-center overflow-hidden z-20 mt-4 mx-auto cursor-none">
-                        <!-- The Truth (Underneath) -->
-                        <div class="absolute inset-2 border-[4px] border-[var(--jhol-black)] bg-[var(--jhol-beige)] z-10 flex flex-col items-center justify-center p-4 md:p-8 text-center pointer-events-none">
-                            <h3 class="text-2xl md:text-4xl font-black text-[var(--jhol-black)] uppercase leading-none mb-2">The D2C Blindspot</h3>
-                            <p class="text-[10px] md:text-sm font-bold text-[var(--jhol-orange)] uppercase tracking-widest leading-tight">Legacy brands are toxic.<br>D2C brands make pastel toddler food.<br>The 6-12 age group is completely abandoned.</p>
-                        </div>
+                <div class="sticky top-[130px] w-full mb-[10vh] z-30 spatial-wrapper">
+                    <div class="spatial-card w-full bg-[var(--jhol-orange)] border-[4px] border-[var(--jhol-black)] p-8 md:p-12 shadow-[16px_16px_0_var(--jhol-black)] flex flex-col justify-center min-h-[50vh] transform rotate-[-0.5deg] origin-top">
+                        <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter text-[var(--jhol-black)] mb-4 leading-none">The Hack</h2>
+                        <p class="font-bold text-xl md:text-2xl leading-relaxed text-[var(--jhol-black)] mb-8 opacity-90">
+                            We take 100% grandmother-approved ingredients (Jowar, Spices) and extrude them into high-crunch, western-style junk food formats. 
+                        </p>
                         
-                        <!-- The Lie (Canvas) -->
-                        <canvas id="quote-scratch-canvas" class="absolute inset-2 z-20 touch-none bg-[var(--jhol-black)]" style="width: calc(100% - 16px); height: calc(100% - 16px);"></canvas>
-                        
-                        <!-- Coin -->
-                        <div id="coin-dock" class="absolute -right-6 -bottom-6 w-[70px] h-[70px] z-30 flex items-center justify-center pointer-events-auto">
-                            <div id="scratch-coin" class="w-full h-full bg-[var(--jhol-orange)] border-[3px] border-[var(--jhol-black)] rounded-full flex items-center justify-center shadow-[4px_4px_0px_var(--jhol-black)] cursor-grab active:cursor-grabbing hover:scale-105 transition-transform will-change-transform z-10">
-                                <span class="font-['Dr_Sugiyama'] text-4xl text-[var(--jhol-black)] pt-2 leading-none pointer-events-none" style="font-weight: 400;">J</span>
+                        <div class="relative w-full h-[180px] md:h-[220px] border-[4px] border-[var(--jhol-black)] shadow-[8px_8px_0_var(--jhol-beige)] bg-[var(--jhol-beige-dark)] group flex items-center justify-center overflow-hidden z-20 mt-4 mx-auto cursor-none">
+                            <div class="absolute inset-2 border-[4px] border-[var(--jhol-black)] bg-[var(--jhol-beige)] z-10 flex flex-col items-center justify-center p-4 md:p-8 text-center pointer-events-none">
+                                <h3 class="text-2xl md:text-4xl font-black text-[var(--jhol-black)] uppercase leading-none mb-2">The D2C Blindspot</h3>
+                                <p class="text-[10px] md:text-sm font-bold text-[var(--jhol-orange)] uppercase tracking-widest leading-tight">Legacy brands are toxic.<br>D2C brands make pastel toddler food.<br>The 6-12 age group is completely abandoned.</p>
+                            </div>
+                            
+                            <canvas id="quote-scratch-canvas" class="absolute inset-2 z-20 touch-none bg-[var(--jhol-black)]" style="width: calc(100% - 16px); height: calc(100% - 16px);"></canvas>
+                            
+                            <div id="coin-dock" class="absolute -right-6 -bottom-6 w-[70px] h-[70px] z-30 flex items-center justify-center pointer-events-auto">
+                                <div id="scratch-coin" class="w-full h-full bg-[var(--jhol-orange)] border-[3px] border-[var(--jhol-black)] rounded-full flex items-center justify-center shadow-[4px_4px_0px_var(--jhol-black)] cursor-grab active:cursor-grabbing hover:scale-105 transition-transform will-change-transform z-10">
+                                    <span class="font-cursive text-4xl text-[var(--jhol-black)] pt-2 leading-none pointer-events-none" style="font-weight: 400;">J</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -317,169 +297,679 @@
             </div>
         </section>
 
-        <!-- 3. CAPITAL STACK (DETAILED DISSECTION) -->
-        <section id="capital" class="min-h-[250vh] w-full relative bg-[var(--jhol-black)] border-b-grid">
-            <div class="sticky top-16 h-[calc(100vh-64px)] w-full overflow-hidden flex flex-col md:flex-row p-8 gap-8">
-                <div class="w-full md:w-1/3 flex flex-col justify-between pb-8 z-20 bg-[var(--jhol-black)] md:bg-transparent">
-                    <div>
-                        <span class="text-xs font-black uppercase tracking-widest text-[var(--jhol-orange)] block mb-4">Section 03 / Execution</span>
-                        <h2 class="text-6xl md:text-8xl font-black uppercase text-[var(--jhol-beige)] leading-none tracking-tighter">Capital<br>Stack</h2>
+        <!-- DETAILED CAPITAL LEDGER (FIRST 1CR) -->
+        <section id="capital" class="w-full relative bg-[var(--jhol-black)] border-b-grid pb-24">
+            <div class="flex flex-col lg:flex-row px-6 md:px-12 pt-16 md:pt-24 gap-12 max-w-[1600px] mx-auto">
+                
+                <!-- Left Sticky Heading -->
+                <div class="w-full lg:w-1/3 lg:sticky lg:top-24 h-max z-20 bg-[var(--jhol-black)]">
+                    <span class="text-xs font-black uppercase tracking-widest text-[var(--jhol-orange)] block mb-4 border-[2px] border-[var(--jhol-orange)] px-2 py-1 inline-block">Section 03 / Capital Allocation</span>
+                    <h2 class="text-6xl md:text-8xl lg:text-[8rem] font-black uppercase text-[var(--jhol-beige)] leading-[0.85] tracking-tighter mb-8">First<br><span class="text-[var(--jhol-orange)]">₹1CR.</span></h2>
+                    
+                    <div class="border-[4px] border-[var(--jhol-orange)] p-6 bg-[#130E0C] shadow-[8px_8px_0px_var(--jhol-orange)]">
+                        <p class="font-black text-sm uppercase text-[var(--jhol-orange)] leading-relaxed mb-3 border-b-2 border-[#333] pb-2">Operator Memo / Not a Pitch Deck</p>
+                        <p class="font-bold text-xs uppercase text-[var(--jhol-beige-dark)] leading-relaxed opacity-90">
+                            The single most common mistake early D2C founders make is spending 60% of seed capital on marketing before the product is ready to earn organic word-of-mouth.<br><br>
+                            Chatak's allocation philosophy: product-heavy early, marketing-light until the product can carry itself. A food technologist who cracks tiffin-safe crunch is worth more than ₹40L of Meta ads.
+                        </p>
                     </div>
-                    <p class="font-bold text-sm uppercase text-[var(--jhol-beige-dark)] max-w-xs mt-4 leading-relaxed bg-[var(--jhol-black)] md:bg-transparent p-2 md:p-0">Scroll to dissect the ₹1 Crore deployment. A ₹60 snack has zero D2C viability. We are 80% Quick-Commerce first.</p>
                 </div>
                 
-                <div class="w-full md:w-2/3 h-full relative" id="cards-container">
+                <!-- Right Scrolling Ledger -->
+                <div class="w-full lg:w-2/3 z-10">
                     
-                    <!-- Card 1 -->
-                    <div class="exp-card absolute top-[5%] left-0 w-full md:w-[90%] bg-[var(--jhol-orange)] text-[var(--jhol-black)] border-[4px] border-[var(--jhol-black)] p-6 md:p-8 shadow-[8px_8px_0px_var(--jhol-beige)] rotate-[-1deg] cursor-pointer hover:translate-y-[-2px] transition-transform" onclick="toggleCard(this)">
-                        <div class="flex justify-between border-b-4 border-[var(--jhol-black)] pb-4 mb-4 font-black text-xs md:text-sm uppercase tracking-widest"><span>₹40,00,000</span><span>40% Allocation</span></div>
-                        <h3 class="text-3xl md:text-5xl font-black uppercase mb-0 leading-none">R&D & Inventory MOQs</h3>
-                        <div class="card-details h-0 overflow-hidden opacity-0">
-                            <div class="font-bold text-xs md:text-sm uppercase tracking-widest opacity-90 space-y-2 pt-6">
-                                <p>> The IP is Food Science, not marketing.</p>
-                                <p>> Standardizing traditional spices into hyper-palatable "flavor dust" that stains fingers like legacy chips.</p>
-                                <p>> Securing batch-manufacturing minimums to keep unit economics viable at a ₹60 MRP.</p>
-                            </div>
+                    <!-- Stats Bar Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="border-[3px] border-[var(--jhol-orange)] p-4 bg-[#130E0C]">
+                            <div class="text-[10px] text-[var(--jhol-orange)] uppercase tracking-widest mb-1 font-black">Total Capital</div>
+                            <div class="text-xl md:text-2xl font-black text-[var(--jhol-beige)]">₹1,00,00,000</div>
                         </div>
-                        <div class="expand-icon mt-4 text-[var(--jhol-black)] text-[10px] md:text-xs font-black uppercase tracking-widest opacity-70 border-[2px] border-[var(--jhol-black)] inline-block px-2 py-1">[+] DISSECT</div>
+                        <div class="border-[3px] border-[var(--jhol-orange)] p-4 bg-[#130E0C]">
+                            <div class="text-[10px] text-[var(--jhol-orange)] uppercase tracking-widest mb-1 font-black">Deploy Window</div>
+                            <div class="text-xl md:text-2xl font-black text-[var(--jhol-beige)]">12 Months</div>
+                        </div>
+                        <div class="border-[3px] border-[var(--jhol-orange)] p-4 bg-[#130E0C]">
+                            <div class="text-[10px] text-[var(--jhol-orange)] uppercase tracking-widest mb-1 font-black">Phase Structure</div>
+                            <div class="text-xl md:text-2xl font-black text-[var(--jhol-beige)] leading-none mb-1">3 Phases</div>
+                            <div class="text-[10px] text-[var(--jhol-beige-dark)] font-bold uppercase">Prove · Build · Scale</div>
+                        </div>
+                        <div class="border-[3px] border-[var(--jhol-orange)] p-4 bg-[#130E0C] shadow-[4px_4px_0_var(--jhol-orange)]">
+                            <div class="text-[10px] text-[var(--jhol-orange)] uppercase tracking-widest mb-1 font-black">Hard Rule</div>
+                            <div class="text-sm font-black text-[var(--jhol-beige)] leading-tight mt-1">NO PAID ADS UNTIL MONTH 4</div>
+                        </div>
                     </div>
-                    
-                    <!-- Card 2 -->
-                    <div class="exp-card absolute top-[15%] left-[5%] w-full md:w-[90%] bg-[var(--jhol-beige)] text-[var(--jhol-black)] border-[4px] border-[var(--jhol-orange)] p-6 md:p-8 shadow-[8px_8px_0px_var(--jhol-orange)] rotate-[1.5deg] opacity-0 translate-y-16 cursor-pointer hover:translate-y-[-2px] transition-transform" onclick="toggleCard(this)">
-                        <div class="flex justify-between border-b-4 border-[var(--jhol-orange)] pb-4 mb-4 font-black text-xs md:text-sm uppercase tracking-widest text-[var(--jhol-orange)]"><span>₹30,00,000</span><span>30% Allocation</span></div>
-                        <h3 class="text-3xl md:text-5xl font-black uppercase mb-0 leading-none text-[var(--jhol-black)]">Q-Commerce Visibility</h3>
-                        <div class="card-details h-0 overflow-hidden opacity-0">
-                            <div class="font-bold text-xs md:text-sm uppercase tracking-widest text-[var(--jhol-black)] opacity-90 space-y-2 pt-6">
-                                <p>> Zepto/Blinkit Dark Store Slotting Fees.</p>
-                                <p>> Search Hijacking: Aggressive bidding on competitor terms ("Kurkure", "Chips") during the 4 PM panic window.</p>
-                                <p>> Launch restricted to 3 Tier-1 micro-markets (e.g., HSR Layout) to prove velocity before scale.</p>
-                            </div>
+
+                    <!-- The Ledger Table -->
+                    <div class="border-[4px] border-[var(--jhol-orange)] bg-[var(--jhol-beige)] text-[var(--jhol-black)] shadow-[12px_12px_0px_var(--jhol-orange)]">
+                        
+                        <!-- Header Row -->
+                        <div class="hidden md:grid grid-cols-[1fr_50px_80px_2fr] gap-4 p-4 border-b-[4px] border-[var(--jhol-black)] font-black text-[10px] uppercase tracking-widest bg-[var(--jhol-orange)] text-[var(--jhol-black)]">
+                            <div>Bucket</div>
+                            <div class="text-right">%</div>
+                            <div class="text-right">₹ Amount</div>
+                            <div class="pl-4">Allocation Bar</div>
                         </div>
-                        <div class="expand-icon mt-4 text-[var(--jhol-orange)] text-[10px] md:text-xs font-black uppercase tracking-widest opacity-80 border-[2px] border-[var(--jhol-orange)] inline-block px-2 py-1">[+] DISSECT</div>
+
+                        <!-- Row 1 -->
+                        <div class="ledger-row grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-2 md:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] items-center hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm md:text-base uppercase flex items-center flex-wrap gap-2">
+                                    Inventory — 3 SKUs
+                                    <span class="text-[9px] px-1.5 py-0.5 bg-[var(--jhol-black)] text-[var(--jhol-beige)] tracking-widest uppercase">Compounding</span>
+                                </div>
+                                <div class="font-bold text-[10px] opacity-80 mt-1 uppercase">Batch 1 + Batch 2 buffer. 3 SKUs × 2 production runs.</div>
+                            </div>
+                            <div class="font-black text-lg md:text-right hidden md:block">28%</div>
+                            <div class="font-black text-lg text-[var(--jhol-orange)] md:text-right">₹28L</div>
+                            <div class="md:pl-4 w-full"><div class="ledger-bar-container"><div class="ledger-bar-fill" style="width: 28%; background: #0A0A0A;"></div></div></div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="ledger-row grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-2 md:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] items-center hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm md:text-base uppercase flex items-center flex-wrap gap-2">
+                                    Performance Marketing
+                                    <span class="text-[9px] px-1.5 py-0.5 border-[2px] border-[var(--jhol-black)] text-[var(--jhol-black)] tracking-widest uppercase">Month 4+</span>
+                                </div>
+                                <div class="font-bold text-[10px] opacity-80 mt-1 uppercase">Meta only. No Google. No influencer-paid. UGC-first creatives.</div>
+                            </div>
+                            <div class="font-black text-lg md:text-right hidden md:block">18%</div>
+                            <div class="font-black text-lg text-[var(--jhol-orange)] md:text-right">₹18L</div>
+                            <div class="md:pl-4 w-full"><div class="ledger-bar-container"><div class="ledger-bar-fill" style="width: 18%;"></div></div></div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="ledger-row grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-2 md:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] items-center hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm md:text-base uppercase flex items-center flex-wrap gap-2">
+                                    Packaging + Design
+                                    <span class="text-[9px] px-1.5 py-0.5 bg-[var(--jhol-black)] text-[var(--jhol-beige)] tracking-widest uppercase">Compounding</span>
+                                </div>
+                                <div class="font-bold text-[10px] opacity-80 mt-1 uppercase">Structural tooling, matte laminate, insert cards, unboxing design.</div>
+                            </div>
+                            <div class="font-black text-lg md:text-right hidden md:block">14%</div>
+                            <div class="font-black text-lg text-[var(--jhol-orange)] md:text-right">₹14L</div>
+                            <div class="md:pl-4 w-full"><div class="ledger-bar-container"><div class="ledger-bar-fill" style="width: 14%; background: #0A0A0A;"></div></div></div>
+                        </div>
+
+                        <!-- Row 4 -->
+                        <div class="ledger-row grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-2 md:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] items-center hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm md:text-base uppercase flex items-center flex-wrap gap-2">
+                                    Sampling + Seeding
+                                    <span class="text-[9px] px-1.5 py-0.5 bg-[var(--jhol-black)] text-[var(--jhol-beige)] tracking-widest uppercase">Compounding</span>
+                                </div>
+                                <div class="font-bold text-[10px] opacity-80 mt-1 uppercase">School canteen pilots, nutritionist kits, parent community drops.</div>
+                            </div>
+                            <div class="font-black text-lg md:text-right hidden md:block">10%</div>
+                            <div class="font-black text-lg text-[var(--jhol-orange)] md:text-right">₹10L</div>
+                            <div class="md:pl-4 w-full"><div class="ledger-bar-container"><div class="ledger-bar-fill" style="width: 10%; background: #0A0A0A;"></div></div></div>
+                        </div>
+
+                        <!-- Row 5 -->
+                        <div class="ledger-row grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-2 md:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] items-center hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm md:text-base uppercase flex items-center flex-wrap gap-2">
+                                    Team — Core 3 Hires
+                                </div>
+                                <div class="font-bold text-[10px] opacity-80 mt-1 uppercase">Food technologist, ops/supply chain, content lead. Founders deferred.</div>
+                            </div>
+                            <div class="font-black text-lg md:text-right hidden md:block">12%</div>
+                            <div class="font-black text-lg text-[var(--jhol-orange)] md:text-right">₹12L</div>
+                            <div class="md:pl-4 w-full"><div class="ledger-bar-container"><div class="ledger-bar-fill" style="width: 12%; background: #666;"></div></div></div>
+                        </div>
+
+                        <!-- Row 6 -->
+                        <div class="ledger-row grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-2 md:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] items-center hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm md:text-base uppercase flex items-center flex-wrap gap-2">
+                                    Creator + UGC Engine
+                                    <span class="text-[9px] px-1.5 py-0.5 bg-[var(--jhol-black)] text-[var(--jhol-beige)] tracking-widest uppercase">Compounding</span>
+                                </div>
+                                <div class="font-bold text-[10px] opacity-80 mt-1 uppercase">Nano-creator seeding, product gifting, UGC incentive programme.</div>
+                            </div>
+                            <div class="font-black text-lg md:text-right hidden md:block">8%</div>
+                            <div class="font-black text-lg text-[var(--jhol-orange)] md:text-right">₹8L</div>
+                            <div class="md:pl-4 w-full"><div class="ledger-bar-container"><div class="ledger-bar-fill" style="width: 8%; background: #0A0A0A;"></div></div></div>
+                        </div>
+
+                        <!-- Row 7 -->
+                        <div class="ledger-row grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-2 md:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] items-center hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm md:text-base uppercase flex items-center flex-wrap gap-2">
+                                    Website + Tech Stack
+                                </div>
+                                <div class="font-bold text-[10px] opacity-80 mt-1 uppercase">Shopify. No custom dev. Subscription plugin. WhatsApp integration.</div>
+                            </div>
+                            <div class="font-black text-lg md:text-right hidden md:block">4%</div>
+                            <div class="font-black text-lg text-[var(--jhol-orange)] md:text-right">₹4L</div>
+                            <div class="md:pl-4 w-full"><div class="ledger-bar-container"><div class="ledger-bar-fill" style="width: 4%; background: #666;"></div></div></div>
+                        </div>
+
+                        <!-- Row 8 -->
+                        <div class="ledger-row grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-2 md:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] items-center hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm md:text-base uppercase flex items-center flex-wrap gap-2">
+                                    Q-Commerce Onboarding
+                                </div>
+                                <div class="font-bold text-[10px] opacity-80 mt-1 uppercase">Blinkit + Zepto listing fees, dark store seed stock, platform ops.</div>
+                            </div>
+                            <div class="font-black text-lg md:text-right hidden md:block">4%</div>
+                            <div class="font-black text-lg text-[var(--jhol-orange)] md:text-right">₹4L</div>
+                            <div class="md:pl-4 w-full"><div class="ledger-bar-container"><div class="ledger-bar-fill" style="width: 4%; background: #666;"></div></div></div>
+                        </div>
+
+                        <!-- Row 9 -->
+                        <div class="ledger-row grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-2 md:gap-4 p-4 border-b-[4px] border-[var(--jhol-black)] items-center hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm md:text-base uppercase flex items-center flex-wrap gap-2">
+                                    Working Capital Reserve
+                                    <span class="text-[9px] px-1.5 py-0.5 border-[2px] border-red-600 text-red-600 bg-red-100 tracking-widest uppercase">Non-Negotiable</span>
+                                </div>
+                                <div class="font-bold text-[10px] opacity-80 mt-1 uppercase">QC failures, reorder buffer, regulatory, unforeseen ops.</div>
+                            </div>
+                            <div class="font-black text-lg md:text-right hidden md:block">2%</div>
+                            <div class="font-black text-lg text-[var(--jhol-orange)] md:text-right">₹2L</div>
+                            <div class="md:pl-4 w-full"><div class="ledger-bar-container"><div class="ledger-bar-fill" style="width: 2%; background: #DC2626;"></div></div></div>
+                        </div>
+
+                        <!-- Total Row -->
+                        <div class="grid grid-cols-1 md:grid-cols-[1fr_50px_80px_2fr] gap-4 p-4 bg-[var(--jhol-black)] text-[var(--jhol-beige)] items-center font-black uppercase tracking-widest text-lg">
+                            <div>Total Allocation</div>
+                            <div class="md:text-right hidden md:block">100%</div>
+                            <div class="text-[var(--jhol-orange)] md:text-right">₹1.00 Cr</div>
+                            <div></div>
+                        </div>
                     </div>
-                    
-                    <!-- Card 3 -->
-                    <div class="exp-card absolute top-[25%] left-[10%] w-full md:w-[90%] bg-[var(--jhol-black)] text-[var(--jhol-beige)] border-[4px] border-[var(--jhol-orange)] p-6 md:p-8 shadow-[8px_8px_0px_var(--jhol-beige)] rotate-[-0.5deg] opacity-0 translate-y-16 cursor-pointer hover:translate-y-[-2px] transition-transform" onclick="toggleCard(this)">
-                        <div class="flex justify-between border-b-4 border-[var(--jhol-orange)] pb-4 mb-4 font-black text-xs md:text-sm uppercase tracking-widest text-[var(--jhol-orange)]"><span>₹30,00,000</span><span>30% Combined</span></div>
-                        <h3 class="text-3xl md:text-5xl font-black uppercase mb-0 leading-none text-[var(--jhol-beige)]">Growth & Ops Engine</h3>
-                        <div class="card-details h-0 overflow-hidden opacity-0">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-                                <div>
-                                    <h3 class="text-xl md:text-2xl font-black uppercase mb-2 leading-none text-[var(--jhol-orange)]">15% Meta Ads</h3>
-                                    <p class="font-bold text-[10px] md:text-xs uppercase tracking-widest opacity-80">The Trust Engine. Fear-alleviating clinical ingredient breakdowns targeting mothers. Bypassing D2C, pushing directly to Zepto carts.</p>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl md:text-2xl font-black uppercase mb-2 leading-none text-[var(--jhol-orange)]">15% Core Team</h3>
-                                    <p class="font-bold text-[10px] md:text-xs uppercase tracking-widest opacity-80">Lean operations. One Search Ads Specialist to arbitrage Q-Comm bids. One Supply Chain Hustler to prevent dark-store stockouts.</p>
-                                </div>
-                            </div>
+
+                    <!-- Ledger Legend -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                        <div class="bg-[#EAF3DE] border-[3px] border-[#27500A] p-4 shadow-[4px_4px_0px_#27500A]">
+                            <div class="font-black text-[10px] text-[#27500A] uppercase tracking-widest mb-2 border-b-[2px] border-[#27500A] pb-1">Compounding Spend</div>
+                            <div class="font-bold text-[11px] text-[#3B6D11] uppercase leading-relaxed">Packaging, sampling, UGC, inventory — every rupee here builds an asset that reduces future CAC.</div>
                         </div>
-                        <div class="expand-icon mt-4 text-[var(--jhol-orange)] text-[10px] md:text-xs font-black uppercase tracking-widest opacity-80 border-[2px] border-[var(--jhol-orange)] inline-block px-2 py-1">[+] DISSECT</div>
+                        <div class="bg-[#FAEEDA] border-[3px] border-[#633806] p-4 shadow-[4px_4px_0px_#633806]">
+                            <div class="font-black text-[10px] text-[#633806] uppercase tracking-widest mb-2 border-b-[2px] border-[#633806] pb-1">Time-Gated Spend</div>
+                            <div class="font-bold text-[11px] text-[#854F0B] uppercase leading-relaxed">Paid ads held until Month 4. Spending before organic retention is validated is burning capital on a leaking bucket.</div>
+                        </div>
+                        <div class="bg-[#FCEBEB] border-[3px] border-[#791F1F] p-4 shadow-[4px_4px_0px_#791F1F]">
+                            <div class="font-black text-[10px] text-[#791F1F] uppercase tracking-widest mb-2 border-b-[2px] border-[#791F1F] pb-1">Ego Spend To Avoid</div>
+                            <div class="font-bold text-[11px] text-[#A32D2D] uppercase leading-relaxed">Macro influencers. Trade shows. Office space. Brand films. These feel important. They are not survivable at seed.</div>
+                        </div>
                     </div>
 
                 </div>
             </div>
         </section>
 
-        <!-- 4. THE VETO (EXPANDED KILL SWITCH GRID) -->
-        <section id="veto" class="py-24 md:py-32 w-full bg-[var(--jhol-orange)] text-[var(--jhol-black)] border-b-grid relative z-20 flex flex-col items-center px-6">
+        <section id="gtm" class="py-24 bg-[var(--jhol-beige-dark)] text-[var(--jhol-black)] border-b-grid relative z-10 px-6">
             <div class="max-w-6xl mx-auto w-full">
-                <div class="text-center mb-16">
-                    <span class="text-xs font-black uppercase tracking-widest text-[var(--jhol-black)] block mb-6 border-[2px] border-[var(--jhol-black)] inline-block px-4 py-2 bg-transparent shadow-[4px_4px_0_var(--jhol-black)]">Section 04 / The Palate Veto</span>
-                    <h2 class="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-6 text-[var(--jhol-black)] mix-blend-color-burn">Kill Switches</h2>
-                    <p class="font-bold text-base md:text-lg uppercase tracking-widest max-w-2xl mx-auto opacity-90 border-t-[3px] border-[var(--jhol-black)] pt-4">Hard stop metrics. If any of these thresholds are breached, we immediately kill the SKU, reformulate, or shut down. No vanity scaling.</p>
+                <span class="text-xs font-black uppercase tracking-widest text-[var(--jhol-orange)] block mb-6 border-[2px] border-[var(--jhol-orange)] inline-block px-4 py-2 bg-[rgba(255,69,0,0.1)] shadow-[4px_4px_0_var(--jhol-orange)]">Section 03.5 / The First ₹1 Crore</span>
+                <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none mb-12 text-[var(--jhol-black)]">GTM & Sequencing</h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
+                    <div class="bg-[var(--jhol-beige)] border-[3px] border-[var(--jhol-black)] p-6 shadow-[8px_8px_0px_var(--jhol-black)]">
+                        <div class="font-black text-2xl text-[var(--jhol-orange)] border-b-2 border-[var(--jhol-black)] pb-2 mb-4">PHASE 1 (M1-M3)</div>
+                        <h4 class="font-bold uppercase tracking-widest mb-2">Prove The Product</h4>
+                        <p class="text-xs font-bold uppercase tracking-widest opacity-80 leading-relaxed">
+                            Zero paid acquisition. Direct seeding to 500 households, pediatric nutritionists, and micro-creators. Does the tiffin come back empty? If not, reformulate before spending ₹1 on Meta.
+                        </p>
+                    </div>
+                    <div class="bg-[var(--jhol-beige)] border-[3px] border-[var(--jhol-black)] p-6 shadow-[8px_8px_0px_var(--jhol-black)]">
+                        <div class="font-black text-2xl text-[var(--jhol-orange)] border-b-2 border-[var(--jhol-black)] pb-2 mb-4">PHASE 2 (M4-M7)</div>
+                        <h4 class="font-bold uppercase tracking-widest mb-2">Build The Channel</h4>
+                        <p class="text-xs font-bold uppercase tracking-widest opacity-80 leading-relaxed">
+                            Quick-commerce first (Blinkit/Zepto). Tiffin crises are 10-minute urgencies, not 3-day D2C deliveries. D2C site launches for subscriptions only. Meta ads begin purely as a creative testing lab.
+                        </p>
+                    </div>
+                    <div class="bg-[var(--jhol-black)] text-[var(--jhol-beige)] border-[3px] border-[var(--jhol-orange)] p-6 shadow-[8px_8px_0px_var(--jhol-orange)]">
+                        <div class="font-black text-2xl text-[var(--jhol-orange)] border-b-2 border-[var(--jhol-orange)] pb-2 mb-4">PHASE 3 (M8-M12)</div>
+                        <h4 class="font-bold uppercase tracking-widest mb-2">Scale What Works</h4>
+                        <p class="text-xs font-bold uppercase tracking-widest opacity-90 leading-relaxed">
+                            Scale the lowest CAC creative and highest repeating city. Offline pilots begin in Modern Trade not for growth, but as a legitimacy signal. Target M12 metric: 40% repeat rate.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Unit Economics Block -->
+                    <div class="border-[4px] border-[var(--jhol-black)] bg-[var(--jhol-beige)] p-8 shadow-[12px_12px_0px_var(--jhol-black)]">
+                        <h3 class="text-2xl md:text-3xl font-black uppercase mb-6 tracking-tighter">Unit Economics (Base Case)</h3>
+                        <div class="grid grid-cols-2 gap-6 font-black uppercase tracking-widest text-xs md:text-sm">
+                            <div class="border-l-[3px] border-[var(--jhol-orange)] pl-4">
+                                <div class="opacity-60 mb-1">Blended CAC</div>
+                                <div class="text-2xl md:text-3xl text-[var(--jhol-orange)]">₹360</div>
+                            </div>
+                            <div class="border-l-[3px] border-[var(--jhol-orange)] pl-4">
+                                <div class="opacity-60 mb-1">AOV</div>
+                                <div class="text-2xl md:text-3xl">₹440</div>
+                            </div>
+                            <div class="border-l-[3px] border-[var(--jhol-orange)] pl-4">
+                                <div class="opacity-60 mb-1">M2 Repeat Rate</div>
+                                <div class="text-2xl md:text-3xl">38%</div>
+                            </div>
+                            <div class="border-l-[3px] border-[var(--jhol-orange)] pl-4">
+                                <div class="opacity-60 mb-1">Payback</div>
+                                <div class="text-2xl md:text-3xl">2.2 Ords</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- M12 Success Block -->
+                    <div class="border-[4px] border-[var(--jhol-black)] bg-[var(--jhol-orange)] p-8 shadow-[12px_12px_0px_var(--jhol-black)] text-[var(--jhol-black)]">
+                        <h3 class="text-2xl md:text-3xl font-black uppercase mb-4 tracking-tighter border-b-[2px] border-[var(--jhol-black)] pb-2 inline-block">M12 True Success</h3>
+                        <p class="font-bold text-sm uppercase tracking-widest leading-relaxed mb-4">
+                            Not revenue. Not followers. The one number that matters: <span class="bg-[var(--jhol-black)] text-[var(--jhol-orange)] px-2">40% of Month 1 buyers place a second order within 60 days.</span>
+                        </p>
+                        <ul class="text-xs font-black uppercase tracking-widest space-y-2 opacity-90">
+                            <li>> Monthly Revenue: ₹18-22L (Not 1Cr)</li>
+                            <li>> Active Subscribers: 300-400 Households</li>
+                            <li>> SKUs: Still 3. Maximum.</li>
+                            <li>> Cities with volume: 3 (BLR, BOM, NCR)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Retention Stack Block -->
+                <div class="mt-8 border-[4px] border-[var(--jhol-black)] bg-[var(--jhol-beige-dark)] p-8">
+                    <h3 class="text-xl md:text-2xl font-black uppercase mb-4 tracking-tighter">Retention is the Business Model</h3>
+                    <p class="text-xs font-bold uppercase tracking-widest opacity-80 leading-relaxed mb-4">
+                        A customer who orders twice is worth ₹840. A 6-month subscriber is worth ₹4,200+. CAC is the same (₹370). Subscription is not a feature; it is a CAC correction mechanism.
+                    </p>
+                    <div class="flex flex-col md:flex-row gap-4 border-t-[2px] border-[var(--jhol-black)] pt-4">
+                        <div class="flex-1"><span class="text-[var(--jhol-orange)] font-black">M1:</span> Founder Unboxing Note & Feedback QR</div>
+                        <div class="flex-1"><span class="text-[var(--jhol-orange)] font-black">M2:</span> WhatsApp Inner Circle Rotation Schedule</div>
+                        <div class="flex-1"><span class="text-[var(--jhol-orange)] font-black">M3:</span> The Subscription Trigger (Cheaper & automated)</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- DETAILED KILL CRITERIA LEDGER -->
+        <section id="veto" class="w-full relative bg-[var(--jhol-orange)] border-b-grid pb-24 text-[var(--jhol-black)]">
+            <div class="flex flex-col lg:flex-row px-6 md:px-12 pt-16 md:pt-24 gap-12 max-w-[1600px] mx-auto">
+                
+                <!-- Left Sticky Heading -->
+                <div class="w-full lg:w-1/3 lg:sticky lg:top-24 h-max z-20">
+                    <span class="text-xs font-black uppercase tracking-widest text-[var(--jhol-black)] block mb-4 border-[2px] border-[var(--jhol-black)] px-2 py-1 inline-block">Section 04 / Founder & Board Only</span>
+                    <h2 class="text-6xl md:text-8xl lg:text-[7.5rem] font-black uppercase leading-[0.85] tracking-tighter mb-8">Kill<br>Criteria.</h2>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+                <!-- Right Scrolling Ledger -->
+                <div class="w-full lg:w-2/3 z-10">
                     
-                    <!-- Veto 1 -->
-                    <div class="bg-[var(--jhol-black)] text-[var(--jhol-beige)] border-[4px] border-[var(--jhol-black)] p-8 shadow-[12px_12px_0px_var(--jhol-beige)] transform hover:-translate-y-2 transition-transform duration-300">
-                        <h3 class="text-2xl md:text-3xl text-[var(--jhol-orange)] font-black uppercase mb-4 tracking-tighter border-b-2 border-[var(--jhol-orange)] pb-2">01. The Taste Veto</h3>
-                        <p class="text-sm font-black text-[var(--jhol-beige-dark)] uppercase tracking-widest mb-3">> Metric: M3 Retention < 20%</p>
-                        <p class="text-sm font-bold uppercase tracking-widest opacity-80 leading-relaxed">
-                            First-month revenue is novelty. If organic Month-3 cohort retention drops below 20%, it proves the child rejected the taste. You cannot out-market bad taste. A mother will surrender to legacy chips if the kid complains.
-                        </p>
-                    </div>
+                    <!-- The Ledger Table -->
+                    <div class="border-[4px] border-[var(--jhol-black)] bg-[var(--jhol-beige)] text-[var(--jhol-black)] shadow-[12px_12px_0px_var(--jhol-black)] mb-12">
+                        
+                        <!-- Header Row -->
+                        <div class="hidden lg:grid grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-4 p-4 border-b-[4px] border-[var(--jhol-black)] font-black text-[10px] uppercase tracking-widest bg-[var(--jhol-black)] text-[var(--jhol-orange)]">
+                            <div>Signal / Definition</div>
+                            <div>Threshold (The Quant)</div>
+                            <div>Observation Window</div>
+                            <div>Non-Negotiable Action</div>
+                        </div>
 
-                    <!-- Veto 2 -->
-                    <div class="bg-[var(--jhol-beige)] text-[var(--jhol-black)] border-[4px] border-[var(--jhol-black)] p-8 shadow-[12px_12px_0px_var(--jhol-black)] transform hover:-translate-y-2 transition-transform duration-300">
-                        <h3 class="text-2xl md:text-3xl text-[var(--jhol-orange)] font-black uppercase mb-4 tracking-tighter border-b-2 border-[var(--jhol-black)] pb-2">02. The Velocity Veto</h3>
-                        <p class="text-sm font-black text-[var(--jhol-orange)] uppercase tracking-widest mb-3">> Metric: < 5 Units / Day</p>
-                        <p class="text-sm font-bold uppercase tracking-widest opacity-80 leading-relaxed">
-                            If a Quick-Commerce dark store doesn't turn over 5 units a day organically within the first 14 days, we delist from that pin code immediately. We do not pay rent to sit on virtual shelves.
-                        </p>
-                    </div>
+                        <!-- PHASE 1 HEADER -->
+                        <div class="bg-[var(--jhol-beige-dark)] border-b-[4px] border-[var(--jhol-black)] p-3 font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                            <span class="bg-[var(--jhol-black)] text-[var(--jhol-orange)] px-2 py-0.5">PHASE 1 (M1-M3)</span> <span class="opacity-80">Product Validation</span>
+                        </div>
 
-                    <!-- Veto 3 -->
-                    <div class="bg-[#130E0C] text-white border-[4px] border-[var(--jhol-orange)] p-8 shadow-[12px_12px_0px_var(--jhol-orange)] transform hover:-translate-y-2 transition-transform duration-300">
-                        <h3 class="text-2xl md:text-3xl text-[var(--jhol-orange)] font-black uppercase mb-4 tracking-tighter border-b-2 border-[var(--jhol-orange)] pb-2">03. The CAC Veto</h3>
-                        <p class="text-sm font-black text-[var(--jhol-beige-dark)] uppercase tracking-widest mb-3">> Metric: > ₹150 Acquisition</p>
-                        <p class="text-sm font-bold uppercase tracking-widest opacity-80 leading-relaxed">
-                            For a ₹60 AOV product, a Customer Acquisition Cost exceeding ₹150 means the "Stealth" marketing premise is fundamentally broken. We halt all performance marketing until the core messaging is fixed.
-                        </p>
-                    </div>
+                        <!-- Row 1 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-2 lg:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm uppercase">01. Child Rejection Rate</div>
+                                <div class="text-[10px] font-bold mt-1 opacity-80 uppercase leading-tight">"Did your child ask for it again?" If the veto officer rejects it, parental marketing cannot fix it.</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1">Threshold</div>
+                                    <div class="font-black text-sm text-[var(--jhol-orange)] bg-[var(--jhol-black)] inline-block px-2 py-1 leading-none">SCORE < 3.5</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Window</div>
+                                    <div class="text-[11px] font-black uppercase">6 Weeks<br><span class="opacity-70">150+ Responses</span></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Action</div>
+                                    <div class="text-[11px] font-black uppercase text-[#A32D2D] leading-tight">Reformulate once,<br>then kill architecture</div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <!-- Veto 4 -->
-                    <div class="bg-transparent text-[var(--jhol-black)] border-[4px] border-[var(--jhol-black)] p-8 shadow-[-12px_12px_0px_var(--jhol-black)] transform hover:-translate-y-2 transition-transform duration-300 relative overflow-hidden backdrop-blur-sm">
-                        <div class="absolute inset-0 bg-blueprint opacity-30 pointer-events-none"></div>
-                        <h3 class="text-2xl md:text-3xl text-[var(--jhol-black)] font-black uppercase mb-4 tracking-tighter border-b-2 border-[var(--jhol-black)] pb-2 relative z-10">04. The "Health" Veto</h3>
-                        <p class="text-sm font-black text-[#130E0C] uppercase tracking-widest mb-3 relative z-10">> Metric: Semantic Feedback Shift</p>
-                        <p class="text-sm font-bold uppercase tracking-widest opacity-90 leading-relaxed relative z-10">
-                            If mother-driven reviews start heavily praising us as "healthy" instead of kids praising us as "tasty," we pivot the visual identity. We are not selling health; we are selling stealth junk.
-                        </p>
+                        <!-- Row 2 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-2 lg:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm uppercase">02. Tiffin Physics Cost</div>
+                                <div class="text-[10px] font-bold mt-1 opacity-80 uppercase leading-tight">Crunch retention is the moat. If 4-hour crunch requires palm oil or destroys margins.</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1">Threshold</div>
+                                    <div class="font-black text-sm text-[var(--jhol-orange)] bg-[var(--jhol-black)] inline-block px-2 py-1 leading-none">GM < 55% TO SPEC</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Window</div>
+                                    <div class="text-[11px] font-black uppercase">Post-formulation</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Action</div>
+                                    <div class="text-[11px] font-black uppercase text-[#A32D2D] leading-tight">Kill product architecture</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-2 lg:gap-4 p-4 border-b-[4px] border-[var(--jhol-black)] hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm uppercase">03. UGC Organic Rate</div>
+                                <div class="text-[10px] font-bold mt-1 opacity-80 uppercase leading-tight">GTM thesis assumes product earns its own marketing.</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1">Threshold</div>
+                                    <div class="font-black text-sm text-[var(--jhol-orange)] bg-[var(--jhol-black)] inline-block px-2 py-1 leading-none">RATE < 20%</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Window</div>
+                                    <div class="text-[11px] font-black uppercase">30 Days<br><span class="opacity-70">200+ Seed HHs</span></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Action</div>
+                                    <div class="text-[11px] font-black uppercase text-[#A32D2D] leading-tight">Kill word-of-mouth thesis</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PHASE 2 HEADER -->
+                        <div class="bg-[var(--jhol-beige-dark)] border-b-[4px] border-[var(--jhol-black)] p-3 font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                            <span class="bg-[var(--jhol-black)] text-[var(--jhol-orange)] px-2 py-0.5">PHASE 2 (M4-M7)</span> <span class="opacity-80">Retention Validation</span>
+                        </div>
+
+                        <!-- Row 4 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-2 lg:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm uppercase">04. M2 Repeat Rate</div>
+                                <div class="text-[10px] font-bold mt-1 opacity-80 uppercase leading-tight">Minimum rate to survive CAC. Target is 38%.</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1">Threshold</div>
+                                    <div class="font-black text-sm text-[var(--jhol-orange)] bg-[var(--jhol-black)] inline-block px-2 py-1 leading-none">REPEAT < 28%</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Window</div>
+                                    <div class="text-[11px] font-black uppercase">60 Days per Cohort<br><span class="opacity-70">Across 2 Cohorts</span></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Action</div>
+                                    <div class="text-[11px] font-black uppercase text-[#A32D2D] leading-tight">Kill paid scaling</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 5 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-2 lg:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm uppercase">05. Blended CAC Leak</div>
+                                <div class="text-[10px] font-bold mt-1 opacity-80 uppercase leading-tight">High CAC is acceptable ONLY if repeat is > 45%.</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1">Threshold</div>
+                                    <div class="font-black text-sm text-[var(--jhol-orange)] bg-[var(--jhol-black)] inline-block px-2 py-1 leading-none">> ₹550 AT < 35% REPEAT</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Window</div>
+                                    <div class="text-[11px] font-black uppercase">60 Days active Meta</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Action</div>
+                                    <div class="text-[11px] font-black uppercase text-[#A32D2D] leading-tight">Kill current GTM model</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 6 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-2 lg:gap-4 p-4 border-b-[4px] border-[var(--jhol-black)] hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm uppercase">06. D2C Site Conversion</div>
+                                <div class="text-[10px] font-bold mt-1 opacity-80 uppercase leading-tight">If Blinkit sells out but organic site traffic doesn't convert.</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1">Threshold</div>
+                                    <div class="font-black text-sm text-[var(--jhol-orange)] bg-[var(--jhol-black)] inline-block px-2 py-1 leading-none">CVR < 1.8%</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Window</div>
+                                    <div class="text-[11px] font-black uppercase">90 Days Live<br><span class="opacity-70">Post Optimization</span></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Action</div>
+                                    <div class="text-[11px] font-black uppercase text-[var(--jhol-black)] leading-tight">Pivot to Q-Commerce only</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PHASE 3 HEADER -->
+                        <div class="bg-[var(--jhol-beige-dark)] border-b-[4px] border-[var(--jhol-black)] p-3 font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                            <span class="bg-[var(--jhol-black)] text-[var(--jhol-orange)] px-2 py-0.5">PHASE 3 (M8-M12)</span> <span class="opacity-80">Scale Validation</span>
+                        </div>
+
+                        <!-- Row 7 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-2 lg:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm uppercase">07. Subscription Pen.</div>
+                                <div class="text-[10px] font-bold mt-1 opacity-80 uppercase leading-tight">Subscription is required to justify Series A economics.</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1">Threshold</div>
+                                    <div class="font-black text-sm text-[var(--jhol-orange)] bg-[var(--jhol-black)] inline-block px-2 py-1 leading-none">< 15% OF REVENUE</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Window</div>
+                                    <div class="text-[11px] font-black uppercase">Month 10 Measurement</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Action</div>
+                                    <div class="text-[11px] font-black uppercase text-[#A32D2D] leading-tight">Kill subscription thesis</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 8 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-2 lg:gap-4 p-4 border-b-[2px] border-[rgba(10,10,10,0.1)] hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm uppercase">08. Mfr. Backup Crisis</div>
+                                <div class="text-[10px] font-bold mt-1 opacity-80 uppercase leading-tight">A 6-week stockout in Zepto = permanent algorithmic death.</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1">Threshold</div>
+                                    <div class="font-black text-sm text-[var(--jhol-orange)] bg-[var(--jhol-black)] inline-block px-2 py-1 leading-none">0 QUALIFIED BACKUPS</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Window</div>
+                                    <div class="text-[11px] font-black uppercase">Month 8 Audit</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Action</div>
+                                    <div class="text-[11px] font-black uppercase text-[#A32D2D] leading-tight">Governance escalation</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 9 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[2fr_1.5fr_1fr_1.5fr] gap-2 lg:gap-4 p-4 hover:bg-[rgba(255,69,0,0.05)] transition-colors">
+                            <div>
+                                <div class="font-black text-sm uppercase">09. Seasonal Dropout</div>
+                                <div class="text-[10px] font-bold mt-1 opacity-80 uppercase leading-tight">The "Kurkure Switch" — drops when school breaks hit.</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1">Threshold</div>
+                                    <div class="font-black text-sm text-[var(--jhol-orange)] bg-[var(--jhol-black)] inline-block px-2 py-1 leading-none">NO SCHOOL-TERM REACTIVATION</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Window</div>
+                                    <div class="text-[11px] font-black uppercase">2 School Year Cycles</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div>
+                                    <div class="lg:hidden text-[9px] uppercase tracking-widest opacity-60 mb-1 mt-2">Action</div>
+                                    <div class="text-[11px] font-black uppercase text-[var(--jhol-black)] leading-tight">Restructure business model</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
             </div>
         </section>
 
-        <!-- 5. PORTFOLIO (PHYSICS) -->
-        <section id="products" class="min-h-[140vh] w-full relative bg-[var(--jhol-beige)] flex flex-col pt-24 pb-12 overflow-hidden text-[var(--jhol-black)]">
+        <section id="products" class="w-full relative bg-[var(--jhol-beige)] flex flex-col pt-24 overflow-hidden text-[var(--jhol-black)] pb-0">
             
-            <div class="relative z-20 text-center max-w-5xl mx-auto px-8 mb-12">
+            <div class="relative z-20 text-center max-w-5xl mx-auto px-8 mb-6 flex-shrink-0">
                 <span class="text-xs font-black uppercase tracking-widest text-[var(--jhol-orange)] block mb-4 border-[2px] border-[var(--jhol-orange)] inline-block px-3 py-1 bg-[rgba(255,69,0,0.1)]">Section 05 / Product Pipeline</span>
-                <h2 class="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-6">SKU Gravity Test</h2>
+                <h2 class="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none mb-2">SKU Gravity Test</h2>
             </div>
             
-            <!-- Interactive Dispenser -->
-            <div class="relative z-30 flex justify-center w-full px-4">
-                <div class="bg-[var(--jhol-black)] text-[var(--jhol-beige)] border-[4px] border-[var(--jhol-black)] p-6 shadow-[12px_12px_0px_var(--jhol-orange)] flex flex-col md:flex-row gap-6 relative z-20 max-w-5xl w-full">
+            <div class="relative z-30 flex justify-center w-full px-4 flex-shrink-0">
+                <div class="bg-[var(--jhol-black)] text-[var(--jhol-beige)] border-[4px] border-[var(--jhol-black)] p-4 md:p-6 shadow-[12px_12px_0px_var(--jhol-orange)] flex flex-col md:flex-row gap-6 relative z-20 max-w-5xl w-full">
                     
-                    <!-- Terminal Console -->
                     <div class="flex-grow flex flex-col bg-[var(--jhol-orange)] text-[var(--jhol-black)] border-[4px] border-[var(--jhol-black)] p-6 relative overflow-hidden">
                         <div class="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.1)_50%,transparent_50%)] bg-[size:100%_4px] pointer-events-none"></div>
                         <h3 class="font-black text-xl mb-4 relative z-10 uppercase border-b-4 border-[var(--jhol-black)] pb-2">JHOL Product Portfolio _</h3>
                         <ul class="font-black text-xs md:text-sm tracking-widest leading-loose uppercase relative z-10 space-y-2 flex-grow">
                             <li class="flex flex-col border-b-2 border-[rgba(0,0,0,0.2)] pb-2">
-                                <span class="text-lg">01. Neon Cheese Puffs</span> 
-                                <span class="opacity-80">Jowar Base + Natural Paprika Dust</span>
+                                <span class="text-lg">01. Masala Puffs (Orig. Tadka)</span> 
+                                <span class="opacity-80">₹199 (5x25g) | Jowar/Urad | Margin: 66%</span>
                             </li>
                             <li class="flex flex-col border-b-2 border-[rgba(0,0,0,0.2)] pb-2">
-                                <span class="text-lg">02. Midnight Wafers</span> 
-                                <span class="opacity-80">Makhana Core + Zero-Sugar Dark Cocoa</span>
+                                <span class="text-lg">02. Makhana Crunch (Jeera)</span> 
+                                <span class="opacity-80">₹249 (5x20g) | A2 Ghee | Margin: 63%</span>
                             </li>
                             <li class="flex flex-col">
-                                <span class="text-lg">03. Stealth Noodles</span> 
-                                <span class="opacity-80">Baked Millet Block + MSG-Free Umami</span>
+                                <span class="text-lg">03. Murmura Mix (Nimbu)</span> 
+                                <span class="opacity-80">₹179 (4x30g) | Clean Chaat | Margin: 61%</span>
                             </li>
                         </ul>
                         <div id="system-status" class="font-black text-sm tracking-widest uppercase text-[var(--jhol-beige)] mt-4 animate-pulse bg-[var(--jhol-black)] inline-block px-2 py-1 self-start relative z-10">> Dispense SKU to test gravity_</div>
                     </div>
 
-                    <!-- Dispenser Buttons -->
                     <div class="grid grid-cols-1 gap-4 w-full md:w-64">
-                        <button onclick="dispensePhysics('Puffs', '#FF4500', '#0A0A0A')" class="bg-[var(--jhol-black)] text-[var(--jhol-orange)] font-black text-sm md:text-base uppercase tracking-widest border-[4px] border-[var(--jhol-orange)] py-4 shadow-[4px_4px_0px_var(--jhol-orange)] cursor-hover hover:translate-y-1 hover:shadow-none transition-all active:scale-95">Drop: Neon Puffs</button>
-                        <button onclick="dispensePhysics('Wafers', '#0A0A0A', '#F4EFE6')" class="bg-[var(--jhol-beige)] text-[var(--jhol-black)] font-black text-sm md:text-base uppercase tracking-widest border-[4px] border-[var(--jhol-black)] py-4 shadow-[4px_4px_0px_var(--jhol-black)] cursor-hover hover:translate-y-1 hover:shadow-none transition-all active:scale-95">Drop: Wafers</button>
-                        <button onclick="dispensePhysics('Noodles', '#E5DFC8', '#0A0A0A')" class="bg-[var(--jhol-black)] text-[var(--jhol-beige-dark)] font-black text-sm md:text-base uppercase tracking-widest border-[4px] border-[var(--jhol-beige-dark)] py-4 shadow-[4px_4px_0px_var(--jhol-beige-dark)] cursor-hover hover:translate-y-1 hover:shadow-none transition-all active:scale-95">Drop: Noodles</button>
+                        <button onclick="dispensePhysics('Puffs', '#FACC15', '#0A0A0A')" class="bg-[var(--jhol-black)] text-[var(--jhol-orange)] font-black text-sm md:text-base uppercase tracking-widest border-[4px] border-[var(--jhol-orange)] py-4 shadow-[4px_4px_0px_var(--jhol-orange)] cursor-hover hover:translate-y-1 hover:shadow-none transition-all active:scale-95">Drop: Masala Puffs</button>
+                        <button onclick="dispensePhysics('Makhana', '#0EA5E9', '#FDE047')" class="bg-[var(--jhol-orange)] text-[var(--jhol-black)] font-black text-sm md:text-base uppercase tracking-widest border-[4px] border-[var(--jhol-black)] py-4 shadow-[4px_4px_0px_var(--jhol-black)] cursor-hover hover:translate-y-1 hover:shadow-none transition-all active:scale-95">Drop: Makhana</button>
+                        <button onclick="dispensePhysics('Murmura', '#84CC16', '#0A0A0A')" class="bg-[var(--jhol-black)] text-[var(--jhol-beige-dark)] font-black text-sm md:text-base uppercase tracking-widest border-[4px] border-[var(--jhol-beige-dark)] py-4 shadow-[4px_4px_0px_var(--jhol-beige-dark)] cursor-hover hover:translate-y-1 hover:shadow-none transition-all active:scale-95">Drop: Murmura</button>
                     </div>
                 </div>
             </div>
             
-            <!-- Physics Canvas -->
-            <div id="physics-container" class="absolute bottom-0 left-0 w-full h-[55vh] z-10 border-t-[4px] border-[var(--jhol-black)] bg-blueprint opacity-80"></div>
+            <!-- Added pointer-events-none to the canvas wrapper so it doesn't block HTML clicks -->
+            <div id="physics-container" class="relative w-full h-[35vh] md:h-[40vh] mt-2 z-10 overflow-hidden pointer-events-none"></div>
+            
+            <div class="h-[8vh] w-full border-t-[4px] border-[var(--jhol-black)] bg-[var(--jhol-orange)] opacity-100 z-20 relative flex-shrink-0 flex items-center justify-center font-black uppercase text-xs tracking-widest text-[var(--jhol-black)]">
+                [ Physics Floor Boundary ]
+            </div>
+
+        </section>
+
+        <!-- REPLACED DOSSIER TEXT WITH IMAGE GALLERY -->
+        <section class="py-16 bg-[#130E0C] w-full border-b-grid px-6">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-[var(--jhol-beige)] mb-12 border-b-[4px] border-[var(--jhol-orange)] pb-4 inline-block">Packaging Dossier / <span class="text-[var(--jhol-orange)]">The Illusion</span></h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+                    
+                    <div class="flex flex-col items-center group">
+                        <div class="bg-[var(--jhol-orange)] text-[var(--jhol-black)] font-black p-3 uppercase tracking-widest text-sm md:text-base w-full text-center border-[4px] border-[var(--jhol-orange)] mb-4">01. Masala Puffs</div>
+                        <img src="Massalapuff.jpg" class="w-full object-contain cursor-pointer transition-transform duration-300 group-hover:scale-105 border-[4px] border-[#0A0A0A] shadow-[8px_8px_0_var(--jhol-orange)] bg-black" onerror="console.error('Image failed to load:', this.src)" onclick="showPackagingModal('Massalapuff.jpg')" alt="Masala Puffs Packaging">
+                    </div>
+
+                    <div class="flex flex-col items-center group">
+                        <div class="bg-[var(--jhol-beige)] text-[var(--jhol-black)] font-black p-3 uppercase tracking-widest text-sm md:text-base w-full text-center border-[4px] border-[var(--jhol-beige)] mb-4">02. Makhana Crunch</div>
+                        <img src="makhanacurnch.jpg" class="w-full object-contain cursor-pointer transition-transform duration-300 group-hover:scale-105 border-[4px] border-[#0A0A0A] shadow-[8px_8px_0_var(--jhol-beige)] bg-black" onerror="console.error('Image failed to load:', this.src)" onclick="showPackagingModal('makhanacurnch.jpg')" alt="Makhana Crunch Packaging">
+                    </div>
+
+                    <div class="flex flex-col items-center group">
+                        <div class="bg-[#888] text-[var(--jhol-black)] font-black p-3 uppercase tracking-widest text-sm md:text-base w-full text-center border-[4px] border-[#888] mb-4">03. Murmura Mix</div>
+                        <img src="Murmura.jpg" class="w-full object-contain cursor-pointer transition-transform duration-300 group-hover:scale-105 border-[4px] border-[#0A0A0A] shadow-[8px_8px_0_#888] bg-black" onerror="console.error('Image failed to load:', this.src)" onclick="showPackagingModal('Murmura.jpg')" alt="Murmura Mix Packaging">
+                    </div>
+
+                </div>
+            </div>
         </section>
 
     </main>
+
+    <!-- PACKAGING POP-UP MODAL -->
+    <div id="packaging-modal" class="fixed inset-0 z-[99999] hidden flex-col items-center justify-center bg-[#0A0A0A]/95 backdrop-blur-md p-4 md:p-12 transition-opacity opacity-0 cursor-pointer" onclick="closePackagingModal()">
+        <div class="absolute top-6 right-6 text-[var(--jhol-orange)] font-black uppercase text-2xl md:text-4xl tracking-widest cursor-pointer hover:scale-110 transition-transform flex items-center gap-2">
+            <span>[X] CLOSE</span>
+        </div>
+        <img id="modal-img" src="" class="max-h-[85vh] max-w-full object-contain drop-shadow-[0_0_40px_rgba(255,69,0,0.3)] border-[4px] border-[var(--jhol-black)] rounded-xl" alt="Packaging View">
+        <p class="text-[var(--jhol-beige)] font-black uppercase tracking-widest mt-6 text-sm md:text-lg">> Click anywhere to return_</p>
+    </div>
+
+    <footer class="w-full bg-[#130E0C] border-t-[4px] border-[var(--jhol-orange)] text-[var(--jhol-beige)] flex flex-col relative z-50">
+        <div class="px-6 md:px-12 py-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 max-w-[1500px] mx-auto w-full">
+            <div class="max-w-md">
+                <img src="ChatGPT%20Image%20May%2013,%202026,%2002_21_02%20AM.jpg" alt="JHOL Logo" class="w-64 md:w-80 mb-6 object-contain transform -rotate-1">
+                <p class="font-bold text-sm uppercase tracking-widest opacity-80 leading-relaxed">
+                    The ultimate <span class="text-[var(--jhol-orange)]">₹60</span> nutritional scam. Engineered for the playground economy. Zero D2C vanity, 100% Quick-Commerce execution.
+                </p>
+            </div>
+            <div class="flex flex-col gap-3 font-black text-sm md:text-base uppercase tracking-widest md:text-right border-l-4 md:border-l-0 md:border-r-4 border-[var(--jhol-orange)] pl-4 md:pl-0 md:pr-4 py-2">
+                <a href="#hero" class="hover:text-[var(--jhol-orange)] transition-colors cursor-hover">00 / Genesis</a>
+                <a href="#void" class="hover:text-[var(--jhol-orange)] transition-colors cursor-hover">01 / The Hack</a>
+                <a href="#capital" class="hover:text-[var(--jhol-orange)] transition-colors cursor-hover">02 / Execution</a>
+                <a href="#products" class="hover:text-[var(--jhol-orange)] transition-colors cursor-hover">03 / Portfolio</a>
+            </div>
+        </div>
+        
+        <div class="w-full bg-[var(--jhol-orange)] text-[var(--jhol-black)] py-4 px-6 md:px-12 font-black text-[10px] md:text-xs uppercase tracking-widest flex flex-col md:flex-row justify-between items-center border-t-[4px] border-[var(--jhol-black)] gap-2">
+            <span>© 2026 JHOL NUTRITION.</span>
+            <span>/// PARENTAL ADVISORY ///</span>
+            <span>ALL ILLUSIONS RESERVED.</span>
+        </div>
+    </footer>
 
     <script>
         lucide.createIcons();
@@ -502,17 +992,39 @@
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
+        // Navigation Sync Logic
+        const sectionsToTrack = ['#hero', '#void', '#capital', '#gtm', '#veto', '#products'];
+        const updateNavIndicator = (secId) => {
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            const activeNav = document.querySelector(`a[href="${secId}"]`);
+            const indicator = document.getElementById('nav-indicator');
+            if(activeNav && indicator) {
+                activeNav.classList.add('active');
+                indicator.style.width = activeNav.offsetWidth + 'px';
+                indicator.style.left = activeNav.offsetLeft + 'px';
+            }
+        };
+
+        // ScrollSpy using ScrollTrigger
+        sectionsToTrack.forEach((secId) => {
+            const el = document.querySelector(secId);
+            if(el) {
+                ScrollTrigger.create({
+                    trigger: el,
+                    start: "top 50%", 
+                    end: "bottom 50%", 
+                    onEnter: () => updateNavIndicator(secId),
+                    onEnterBack: () => updateNavIndicator(secId)
+                });
+            }
+        });
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                lenis.scrollTo(this.getAttribute('href'));
-                
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
-                
-                const indicator = document.getElementById('nav-indicator');
-                indicator.style.width = this.offsetWidth + 'px';
-                indicator.style.left = this.offsetLeft + 'px';
+                const targetId = this.getAttribute('href');
+                lenis.scrollTo(targetId);
+                updateNavIndicator(targetId);
             });
         });
 
@@ -583,6 +1095,7 @@
         introTl.to('#hero-main-img', { opacity: 0.8, scale: 1, duration: 1.5, ease: "power2.out" }, "expand+=1.0");
 
         introTl.fromTo('.hero-text-slide', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: "power3.out" }, "expand+=0.8");
+        introTl.to('#hero-text-3d', { opacity: 1, duration: 1.2, ease: "power2.out" }, "expand+=0.9");
         introTl.fromTo('.hero-ui-fade', { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "back.out(1.5)" }, "expand+=1.0");
 
         introTl.to(heroLighting, { opacity: 1, duration: 1.5, ease: "power2.inOut" }, "expand+=0.5");
@@ -659,14 +1172,13 @@
                 const targetScale = isMagneticLock ? 1.03 : 1;
                 currTextScale += (targetScale - currTextScale) * 0.08;
 
-                gsap.set(heroText3d, { x: normX * 15, y: normY * 15, rotationY: normX * 8, rotationX: normY * -8, scale: currTextScale });
-
-                const depth = 25; 
-                let shadowStr = '';
-                for(let i=1; i<=depth; i++) { shadowStr += `${i}px ${i}px 0 var(--jhol-orange), `; }
-                const shBlur = isMagneticLock ? 30 : 20; 
-                shadowStr += `${depth + 5}px ${depth + 5}px ${shBlur}px rgba(0, 0, 0, 0.9)`;
-                heroText3d.style.textShadow = shadowStr;
+                gsap.set(heroText3d, { 
+                    x: normX * 25, 
+                    y: normY * 25, 
+                    rotationY: normX * 15, 
+                    rotationX: normY * -15, 
+                    scale: currTextScale 
+                });
             }
 
             if (heroLighting) {
@@ -675,34 +1187,35 @@
         });
 
         // Spatial Screen Stack Effect
+        const spatialWrappers = gsap.utils.toArray('.spatial-wrapper');
         const spatialCards = gsap.utils.toArray('.spatial-card');
+        
         spatialCards.forEach((card, i) => {
-            // Pinning logic
-            ScrollTrigger.create({
-                trigger: card,
-                start: `top ${100 + (i * 15)}px`, 
-                endTrigger: "#spatial-card-container",
-                end: "bottom bottom",
-                pin: true,
-                pinSpacing: false,
-            });
-
-            // 3D Push-back when the next card overlaps it
             if (i < spatialCards.length - 1) {
                 gsap.to(card, {
                     scrollTrigger: {
-                        trigger: spatialCards[i + 1],
+                        trigger: spatialWrappers[i + 1],
                         start: "top bottom",
-                        end: "top top",
+                        end: "top top+=130",
                         scrub: true,
                     },
                     scale: 0.92,
                     rotationX: -5,
-                    y: -20,
-                    filter: "brightness(0.4)",
+                    y: -10,
                     ease: "none"
                 });
             }
+        });
+
+        // Ledger Row Animations
+        gsap.utils.toArray('.ledger-row').forEach((row, i) => {
+            gsap.from(row, {
+                scrollTrigger: { 
+                    trigger: row, 
+                    start: "top 90%" 
+                },
+                y: 30, opacity: 0, duration: 0.6, ease: "power2.out"
+            });
         });
 
         // Interactive Scratch Canvas Logic
@@ -754,30 +1267,33 @@
             });
         }
 
-        // Execution Dissection Cards
-        gsap.utils.toArray('.exp-card').forEach((card, i) => {
-            if(i === 0) return; 
-            gsap.to(card, {
-                scrollTrigger: { trigger: "#capital", start: `top+=${i * 300} center`, end: `top+=${(i+1) * 300} center`, scrub: 1 },
-                y: 0, opacity: 1, rotate: 0, duration: 1
-            });
-        });
-
         // Matter.js Setup
         const { Engine, Render, Runner, Bodies, Composite, Events } = Matter;
         const engine = Engine.create();
+        
+        // Optimize engine for tumbling bags
+        engine.positionIterations = 6;
+        engine.velocityIterations = 4;
+
         const container = document.getElementById('physics-container');
         const render = Render.create({ 
             element: container, 
             engine, 
-            options: { width: container.clientWidth, height: container.clientHeight, wireframes: false, background: 'transparent' } 
+            options: { 
+                width: container.clientWidth, 
+                height: container.clientHeight, 
+                wireframes: false, 
+                background: 'transparent',
+                pixelRatio: window.devicePixelRatio // Crisp rendering on all screens
+            } 
         });
         
-        Composite.add(engine.world, [
-            Bodies.rectangle(container.clientWidth/2, container.clientHeight+25, container.clientWidth, 50, {isStatic:true}), 
-            Bodies.rectangle(-25, container.clientHeight/2, 50, container.clientHeight, {isStatic:true}), 
-            Bodies.rectangle(container.clientWidth+25, container.clientHeight/2, 50, container.clientHeight, {isStatic:true})
-        ]);
+        // Massive floor and walls to prevent clipping
+        const ground = Bodies.rectangle(container.clientWidth/2, container.clientHeight + 25, container.clientWidth * 3, 50, {isStatic:true});
+        const wallLeft = Bodies.rectangle(-25, container.clientHeight/2, 50, container.clientHeight * 3, {isStatic:true});
+        const wallRight = Bodies.rectangle(container.clientWidth+25, container.clientHeight/2, 50, container.clientHeight * 3, {isStatic:true});
+        
+        Composite.add(engine.world, [ground, wallLeft, wallRight]);
         
         Render.run(render); 
         Runner.run(Runner.create(), engine);
@@ -785,79 +1301,111 @@
         window.addEventListener('resize', () => {
             render.canvas.width = container.clientWidth;
             render.canvas.height = container.clientHeight;
+            render.options.width = container.clientWidth;
+            render.options.height = container.clientHeight;
+            Matter.Body.setPosition(ground, { x: container.clientWidth/2, y: container.clientHeight + 25 });
+            Matter.Body.setPosition(wallLeft, { x: -25, y: container.clientHeight/2 });
+            Matter.Body.setPosition(wallRight, { x: container.clientWidth + 25, y: container.clientHeight/2 });
         });
 
-        window.dispensePhysics = (name, color, textColor) => {
-            const w = name === 'Noodles' ? 180 : 140;
-            const h = name === 'Noodles' ? 80 : 100;
+        // Modal Logic
+        const packModal = document.getElementById('packaging-modal');
+        const modalImg = document.getElementById('modal-img');
+        
+        window.showPackagingModal = (imgSrc) => {
+            modalImg.src = imgSrc;
+            packModal.classList.remove('hidden');
+            packModal.classList.add('flex');
+            // Small delay to allow display:flex to apply before animating opacity
+            setTimeout(() => {
+                packModal.classList.remove('opacity-0');
+                packModal.classList.add('opacity-100');
+            }, 10);
+            lenis.stop(); // Freeze scrolling
+        };
 
-            const b = Bodies.rectangle(container.clientWidth/2 + (Math.random()*40-20), -50, w, h, { 
+        window.closePackagingModal = () => {
+            packModal.classList.remove('opacity-100');
+            packModal.classList.add('opacity-0');
+            setTimeout(() => {
+                packModal.classList.add('hidden');
+                packModal.classList.remove('flex');
+                modalImg.src = '';
+            }, 300); // Wait for transition
+            lenis.start(); // Resume scrolling
+        };
+
+        // Smart HTML-DOM Physics Dispenser
+        window.dispensePhysics = (name, bgColor, textColor) => {
+            if (container.clientWidth === 0) return; 
+            
+            const w = 110;
+            const h = 150;
+
+            // 1. Create the invisible Physics Body
+            const b = Bodies.rectangle(container.clientWidth/2 + (Math.random()*80-40), -100, w, h, { 
                 label: 'B_'+name, 
-                restitution: 0.5, 
-                friction: 0.8,
-                render: { fillStyle: color, strokeStyle: '#0A0A0A', lineWidth: 4 } 
+                restitution: 0.3, 
+                friction: 0.5,
+                density: 0.01,
+                angle: Math.random() * 0.6 - 0.3, 
+                chamfer: { radius: 10 }, 
+                render: { visible: false } // Hide the canvas drawing completely
             });
-            b.customText = textColor; 
             Composite.add(engine.world, b);
+            
+            // 2. Map Image Paths directly to the exact filenames
+            const imgPath = name === 'Puffs' ? 'Massalapuff.jpg' : (name === 'Makhana' ? 'makhanacurnch.jpg' : 'Murmura.jpg');
+            let skuName = name.toUpperCase();
+            if(skuName === 'MURMURA') skuName = 'MURMURA MIX';
+            else if(skuName === 'PUFFS') skuName = 'MASALA PUFFS';
+            else if(skuName === 'MAKHANA') skuName = 'MAKHANA CRUNCH';
+
+            // 3. Create a real HTML Element to follow the physics body
+            const el = document.createElement('div');
+            el.id = 'dom_' + b.id;
+            
+            // pointer-events-auto allows clicking the falling box!
+            el.className = 'absolute top-0 left-0 pointer-events-auto will-change-transform cursor-pointer group z-20 hover:scale-105 transition-transform duration-75';
+            el.style.width = w + 'px';
+            el.style.height = h + 'px';
+            
+            // Click to open modal
+            el.onclick = () => showPackagingModal(imgPath);
+            
+            // Creates the HTML structure: Reliable colored box with image over it.
+            // If the image fails entirely, onerror hides it, revealing the fallback box underneath.
+            el.innerHTML = `
+                <div class="absolute inset-0 flex flex-col items-center justify-center p-2 text-center" style="background-color: ${bgColor}; color: ${textColor}; border: 4px solid #0A0A0A; border-radius: 12px; box-shadow: 4px 4px 0px rgba(0,0,0,0.4);">
+                    <span class="font-black text-3xl" style="text-shadow: 2px 2px 0px rgba(0,0,0,0.2)">JHOL.</span>
+                    <span class="font-bold text-[10px] mt-2 leading-tight">${skuName}</span>
+                    <div class="absolute bottom-2 left-2 right-2 bg-[#0A0A0A] text-[#F4EFE6] text-[8px] py-1.5 font-black tracking-widest rounded shadow-sm group-hover:bg-[#FF4500] group-hover:text-[#0A0A0A] transition-colors">CLICK TO VIEW</div>
+                </div>
+                <img src="${imgPath}" class="absolute inset-0 w-full h-full object-cover rounded-[10px] z-10 border-[3px] border-[#0A0A0A]" 
+                     onerror="this.style.display='none'"
+                     style="transition: opacity 0.2s;">
+            `;
+            
+            container.appendChild(el);
             
             const terminal = document.getElementById('system-status');
             terminal.innerText = `> DEPLOYING SKU: ${name.toUpperCase()}_`;
             gsap.fromTo(terminal, {opacity: 0}, {opacity: 1, duration: 0.2});
         };
 
-        Events.on(render, 'afterRender', () => {
-            const ctx = render.context;
+        // 4. Sync HTML Element positions to Physics engine coordinates every frame!
+        Events.on(engine, 'afterUpdate', () => {
             Composite.allBodies(engine.world).forEach(b => {
                 if(b.label?.startsWith('B_')) {
-                    ctx.save(); 
-                    ctx.translate(b.position.x, b.position.y); 
-                    ctx.rotate(b.angle);
-                    ctx.font = "900 18px Inter"; 
-                    ctx.fillStyle = b.customText; 
-                    ctx.textAlign = "center";
-                    ctx.textBaseline = "middle";
-                    ctx.fillText(b.label.split('_')[1].toUpperCase(), 0, 0); 
-                    ctx.restore();
+                    const el = document.getElementById('dom_' + b.id);
+                    if(el) {
+                        const x = b.position.x - 55; // offset width half
+                        const y = b.position.y - 75; // offset height half
+                        el.style.transform = `translate(${x}px, ${y}px) rotate(${b.angle}rad)`;
+                    }
                 }
             });
         });
-
-        window.toggleCard = function(element) {
-            const details = element.querySelector('.card-details');
-            const icon = element.querySelector('.expand-icon');
-            const isOpen = details.classList.contains('open');
-
-            document.querySelectorAll('.exp-card').forEach(card => {
-                if (card !== element && card.querySelector('.card-details').classList.contains('open')) {
-                    const otherDetails = card.querySelector('.card-details');
-                    const otherIcon = card.querySelector('.expand-icon');
-                    otherDetails.classList.remove('open');
-                    otherIcon.innerText = '[+] DISSECT';
-                    
-                    gsap.to(otherDetails, {height: 0, opacity: 0, duration: 0.3, ease: "power2.inOut"});
-                    gsap.to(card, { scale: 1, zIndex: 1, boxShadow: card.dataset.origShadow || "8px 8px 0px var(--jhol-beige)", duration: 0.4, ease: "power2.out" });
-                }
-            });
-
-            if (!element.dataset.origShadow) {
-                element.dataset.origShadow = window.getComputedStyle(element).boxShadow;
-            }
-
-            if (isOpen) {
-                details.classList.remove('open');
-                icon.innerText = '[+] DISSECT';
-                
-                gsap.to(details, {height: 0, opacity: 0, duration: 0.3, ease: "power2.inOut"});
-                gsap.to(element, { scale: 1, zIndex: 1, boxShadow: element.dataset.origShadow, duration: 0.4, ease: "power2.out" });
-            } else {
-                details.classList.add('open');
-                icon.innerText = '[-] COLLAPSE';
-                
-                element.style.zIndex = "50";
-                gsap.to(details, {height: 'auto', opacity: 1, duration: 0.4, ease: "power2.out"});
-                gsap.to(element, { scale: 1.05, boxShadow: "24px 24px 0px rgba(0,0,0,0.8)", duration: 0.5, ease: "back.out(1.5)" });
-            }
-        };
     </script>
 </body>
 </html>
