@@ -135,13 +135,7 @@
                         <span class="leading-none whitespace-nowrap relative" style="top: 0.06em;" id="intentionally">ULTIMATE</span>
                     </div>
                 </div>
-                <div class="relative h-full flex-shrink-0 ml-3 sm:ml-4" style="width: 15vw; max-width: 220px;">
-                    <div id="intro-thumb-container" class="absolute inset-x-0 z-[100] overflow-hidden will-change-[transform,width,height,top,left] bg-[var(--jhol-orange)]" style="top: 8%; height: 95%; clip-path: inset(0% 100% 0% 0%); transform-style: preserve-3d;">
-                        <div id="intro-vid" class="kinetic-block w-full h-full font-['Inter'] font-black text-center opacity-0 bg-[var(--jhol-orange)]">
-                            <span class="text-[4vw] md:text-[2vw] text-[var(--jhol-black)] tracking-tighter">HACK.</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Removed the intro-thumb-container block from here -->
             </div>
 
             <div class="flex justify-between w-full mb-2 lg:mb-4">
@@ -193,7 +187,8 @@
         <section id="hero" class="h-screen w-full relative overflow-hidden bg-[#130E0C] cursor-none flex flex-col items-center justify-center border-b-grid" style="perspective: 1200px;">
             
             <div id="hero-bg-target" class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                <div class="absolute inset-0 bg-[#130E0C] opacity-70"></div>
+                <div class="absolute inset-0 bg-[url('ChatGPT%20Image%20May%2013,%202026,%2001_00_50%20AM.jpg')] bg-cover bg-center opacity-80"></div>
+                <div class="absolute inset-0 bg-[#130E0C] opacity-40"></div>
             </div>
             <div id="hero-lighting" class="absolute inset-0 z-[1] opacity-0 pointer-events-none"></div>
 
@@ -217,7 +212,7 @@
                 </div>
 
                 <div id="hero-text-3d" class="relative pointer-events-auto cursor-hover opacity-0 will-change-transform mix-blend-normal text-center pt-8 md:pt-12 w-full px-4 flex justify-center" style="transform-origin: center center;">
-                    <img src="ChatGPT%20Image%20May%2013,%202026,%2002_21_02%20AM.jpg" alt="JHOL Logo" class="w-full max-w-[85vw] md:max-w-2xl lg:max-w-4xl object-contain transform -rotate-2 drop-shadow-2xl">
+                    <img src="ChatGPT%20Image%20May%2013,%202026,%2002_21_02%20AM.jpg" alt="JHOL Logo" class="w-full max-w-[80vw] md:max-w-xl lg:max-w-3xl object-contain transform -rotate-2 drop-shadow-2xl">
                 </div>
 
                 <div class="mt-8 md:mt-12 border-[3px] border-[var(--jhol-orange)] bg-[#130E0C] px-6 py-4 md:py-5 hero-ui-fade opacity-0 max-w-xl mx-auto text-center pointer-events-auto shadow-[8px_8px_0_var(--jhol-orange)]">
@@ -917,22 +912,29 @@
                 <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-[var(--jhol-beige)] mb-12 border-b-[4px] border-[var(--jhol-orange)] pb-4 inline-block">Packaging Dossier / <span class="text-[var(--jhol-orange)]">The Illusion</span></h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-                    
-                    <div class="flex flex-col items-center group">
-                        <div class="bg-[var(--jhol-orange)] text-[var(--jhol-black)] font-black p-3 uppercase tracking-widest text-sm md:text-base w-full text-center border-[4px] border-[var(--jhol-orange)] mb-4">01. Masala Puffs</div>
-                        <img src="Massalapuff.jpg" class="w-full object-contain cursor-pointer transition-transform duration-300 group-hover:scale-105 border-[4px] border-[#0A0A0A] shadow-[8px_8px_0_var(--jhol-orange)] bg-black" onerror="console.error('Image failed to load:', this.src)" onclick="showPackagingModal('Massalapuff.jpg')" alt="Masala Puffs Packaging">
+                    <div class="flex flex-col items-center group cursor-pointer" onclick="showPackagingModal('masalapuffs.jpeg')">
+                        <div class="bg-[var(--jhol-orange)] text-[var(--jhol-black)] font-black p-3 uppercase tracking-widest text-sm md:text-base w-full text-center border-[4px] border-[var(--jhol-orange)] mb-4 relative z-10">01. Masala Puffs</div>
+                        <div class="w-full aspect-[3/4] min-h-[300px] md:min-h-[350px] bg-[var(--jhol-black)] border-[4px] border-[#0A0A0A] shadow-[8px_8px_0_var(--jhol-orange)] overflow-hidden transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[12px_12px_0_var(--jhol-orange)] flex justify-center items-center relative">
+                             <div class="absolute inset-0 flex items-center justify-center text-[var(--jhol-orange)] font-black text-sm uppercase opacity-50 text-center p-4 z-0">Loading Asset...<br>[Masala Puffs]</div>
+                             <img src="masalapuffs.jpeg" class="w-full h-full object-contain p-4 relative z-10" alt="Masala Puffs Packaging">
+                        </div>
                     </div>
 
-                    <div class="flex flex-col items-center group">
-                        <div class="bg-[var(--jhol-beige)] text-[var(--jhol-black)] font-black p-3 uppercase tracking-widest text-sm md:text-base w-full text-center border-[4px] border-[var(--jhol-beige)] mb-4">02. Makhana Crunch</div>
-                        <img src="makhanacurnch.jpg" class="w-full object-contain cursor-pointer transition-transform duration-300 group-hover:scale-105 border-[4px] border-[#0A0A0A] shadow-[8px_8px_0_var(--jhol-beige)] bg-black" onerror="console.error('Image failed to load:', this.src)" onclick="showPackagingModal('makhanacurnch.jpg')" alt="Makhana Crunch Packaging">
+                    <div class="flex flex-col items-center group cursor-pointer" onclick="showPackagingModal('makhana.jpeg')">
+                        <div class="bg-[var(--jhol-beige)] text-[var(--jhol-black)] font-black p-3 uppercase tracking-widest text-sm md:text-base w-full text-center border-[4px] border-[var(--jhol-beige)] mb-4 relative z-10">02. Makhana Crunch</div>
+                        <div class="w-full aspect-[3/4] min-h-[300px] md:min-h-[350px] bg-[var(--jhol-black)] border-[4px] border-[#0A0A0A] shadow-[8px_8px_0_var(--jhol-beige)] overflow-hidden transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[12px_12px_0_var(--jhol-beige)] flex justify-center items-center relative">
+                            <div class="absolute inset-0 flex items-center justify-center text-[var(--jhol-beige)] font-black text-sm uppercase opacity-50 text-center p-4 z-0">Loading Asset...<br>[Makhana Crunch]</div>
+                            <img src="makhana.jpeg" class="w-full h-full object-contain p-4 relative z-10" alt="Makhana Crunch Packaging">
+                        </div>
                     </div>
 
-                    <div class="flex flex-col items-center group">
-                        <div class="bg-[#888] text-[var(--jhol-black)] font-black p-3 uppercase tracking-widest text-sm md:text-base w-full text-center border-[4px] border-[#888] mb-4">03. Murmura Mix</div>
-                        <img src="Murmura.jpg" class="w-full object-contain cursor-pointer transition-transform duration-300 group-hover:scale-105 border-[4px] border-[#0A0A0A] shadow-[8px_8px_0_#888] bg-black" onerror="console.error('Image failed to load:', this.src)" onclick="showPackagingModal('Murmura.jpg')" alt="Murmura Mix Packaging">
+                    <div class="flex flex-col items-center group cursor-pointer" onclick="showPackagingModal('murmuramix.jpeg')">
+                        <div class="bg-[#888] text-[var(--jhol-black)] font-black p-3 uppercase tracking-widest text-sm md:text-base w-full text-center border-[4px] border-[#888] mb-4 relative z-10">03. Murmura Mix</div>
+                        <div class="w-full aspect-[3/4] min-h-[300px] md:min-h-[350px] bg-[var(--jhol-black)] border-[4px] border-[#0A0A0A] shadow-[8px_8px_0_#888] overflow-hidden transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[12px_12px_0_#888] flex justify-center items-center relative">
+                            <div class="absolute inset-0 flex items-center justify-center text-[#888] font-black text-sm uppercase opacity-50 text-center p-4 z-0">Loading Asset...<br>[Murmura Mix]</div>
+                            <img src="murmuramix.jpeg" class="w-full h-full object-contain p-4 relative z-10" alt="Murmura Mix Packaging">
+                        </div>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -951,7 +953,7 @@
     <footer class="w-full bg-[#130E0C] border-t-[4px] border-[var(--jhol-orange)] text-[var(--jhol-beige)] flex flex-col relative z-50">
         <div class="px-6 md:px-12 py-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 max-w-[1500px] mx-auto w-full">
             <div class="max-w-md">
-                <img src="ChatGPT%20Image%20May%2013,%202026,%2002_21_02%20AM.jpg" alt="JHOL Logo" class="w-64 md:w-80 mb-6 object-contain transform -rotate-1">
+                <img src="ChatGPT%20Image%20May%2013,%202026,%2002_21_02%20AM.jpg" alt="JHOL Logo" class="w-72 md:w-[26rem] mb-6 object-contain transform -rotate-1">
                 <p class="font-bold text-sm uppercase tracking-widest opacity-80 leading-relaxed">
                     The ultimate <span class="text-[var(--jhol-orange)]">₹60</span> nutritional scam. Engineered for the playground economy. Zero D2C vanity, 100% Quick-Commerce execution.
                 </p>
@@ -978,7 +980,6 @@
         const preloaderBg = document.getElementById('preloader-bg');
         const preloaderContent = document.getElementById('preloader-content');
         const gradBox = document.getElementById('grad-box');
-        const introThumb = document.getElementById('intro-thumb-container');
         const heroBgTarget = document.getElementById('hero-bg-target');
         const heroLighting = document.getElementById('hero-lighting');
         const heroText3d = document.getElementById('hero-text-3d');
@@ -1061,7 +1062,6 @@
             .addLabel("intent", "-=0.6")
             .to(gradBox, { width: "100%", duration: 1.0, ease: "power4.inOut" }, "intent")
             .to(charIntentionally, { opacity: 1, filter: "blur(0px)", duration: charDur, stagger: stg, ease: "power2.out" }, "intent")
-            .to(introThumb, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.0, ease: "power4.inOut" }, "intent+=0.2")
             .addLabel("line2", "-=0.6")
             .to(charMake, { opacity: 1, filter: "blur(0px)", duration: charDur, stagger: stg, ease: "power2.out" }, "line2")
             .to(charMisalignment, { opacity: 1, filter: "blur(0px)", duration: charDur, stagger: stg, ease: "power2.out" }, "line2+=0.2")
@@ -1077,21 +1077,9 @@
         introTl.to(gradBox, { opacity: 0, filter: "blur(12px)", duration: 0.6, ease: "power2.inOut" }, "outro+=0.4");
 
         introTl.add(() => {
-            const rect = introThumb.getBoundingClientRect();
-            heroBgTarget.appendChild(introThumb);
-            gsap.set(introThumb, { 
-                clipPath: "none", position: "absolute", top: rect.top, left: rect.left, 
-                width: rect.width, height: rect.height, margin: 0, zIndex: 1, borderRadius: "0px",
-                transformOrigin: "center center"
-            });
             document.body.style.overflow = 'auto';
         }, "expand");
 
-        introTl.to(introThumb, { top: "0px", left: "0px", width: "100%", height: "100%", borderRadius: "0px", duration: 1.5, ease: "expo.inOut" }, "expand");
-        introTl.to('#intro-vid', { opacity: 1, scale: 1.05, duration: 1.5, ease: "expo.inOut" }, "expand");
-        
-        introTl.to(introThumb, { opacity: 0, duration: 1.0, ease: "power2.inOut" }, "expand+=1.2");
-        introTl.to('#intro-vid', { opacity: 0, duration: 1.0, ease: "power2.inOut" }, "expand+=1.2");
         introTl.to('#hero-main-img', { opacity: 0.8, scale: 1, duration: 1.5, ease: "power2.out" }, "expand+=1.0");
 
         introTl.fromTo('.hero-text-slide', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: "power3.out" }, "expand+=0.8");
@@ -1350,12 +1338,12 @@
                 density: 0.01,
                 angle: Math.random() * 0.6 - 0.3, 
                 chamfer: { radius: 10 }, 
-                render: { visible: false } // Hide the canvas drawing completely
+                render: { visible: false } 
             });
             Composite.add(engine.world, b);
             
-            // 2. Map Image Paths directly to the exact filenames
-            const imgPath = name === 'Puffs' ? 'Massalapuff.jpg' : (name === 'Makhana' ? 'makhanacurnch.jpg' : 'Murmura.jpg');
+            // 2. Map Image Paths directly to the verbatim filenames provided
+            const imgPath = name === 'Puffs' ? 'masalapuffs.jpeg' : (name === 'Makhana' ? 'makhana.jpeg' : 'murmuramix.jpeg');
             let skuName = name.toUpperCase();
             if(skuName === 'MURMURA') skuName = 'MURMURA MIX';
             else if(skuName === 'PUFFS') skuName = 'MASALA PUFFS';
@@ -1365,31 +1353,27 @@
             const el = document.createElement('div');
             el.id = 'dom_' + b.id;
             
-            // pointer-events-auto allows clicking the falling box!
-            el.className = 'absolute top-0 left-0 pointer-events-auto will-change-transform cursor-pointer group z-20 hover:scale-105 transition-transform duration-75';
+            // pointer-events-auto allows clicking the falling box to open the dossier modal
+            el.className = 'absolute top-0 left-0 pointer-events-auto will-change-transform cursor-pointer group z-20 hover:scale-110 transition-transform duration-75';
             el.style.width = w + 'px';
             el.style.height = h + 'px';
             
-            // Click to open modal
+            // When physical box is clicked, use the high-res dossier image verbatim
             el.onclick = () => showPackagingModal(imgPath);
             
-            // Creates the HTML structure: Reliable colored box with image over it.
-            // If the image fails entirely, onerror hides it, revealing the fallback box underneath.
             el.innerHTML = `
                 <div class="absolute inset-0 flex flex-col items-center justify-center p-2 text-center" style="background-color: ${bgColor}; color: ${textColor}; border: 4px solid #0A0A0A; border-radius: 12px; box-shadow: 4px 4px 0px rgba(0,0,0,0.4);">
                     <span class="font-black text-3xl" style="text-shadow: 2px 2px 0px rgba(0,0,0,0.2)">JHOL.</span>
                     <span class="font-bold text-[10px] mt-2 leading-tight">${skuName}</span>
-                    <div class="absolute bottom-2 left-2 right-2 bg-[#0A0A0A] text-[#F4EFE6] text-[8px] py-1.5 font-black tracking-widest rounded shadow-sm group-hover:bg-[#FF4500] group-hover:text-[#0A0A0A] transition-colors">CLICK TO VIEW</div>
                 </div>
-                <img src="${imgPath}" class="absolute inset-0 w-full h-full object-cover rounded-[10px] z-10 border-[3px] border-[#0A0A0A]" 
-                     onerror="this.style.display='none'"
-                     style="transition: opacity 0.2s;">
+                <img src="${imgPath}" class="absolute inset-0 w-full h-full object-contain p-1 rounded-[10px] z-10 border-[3px] border-[#0A0A0A] bg-[#130E0C]">
+                <div class="absolute -top-2 -right-2 bg-[var(--jhol-orange)] text-[var(--jhol-black)] rounded-full w-6 h-6 flex items-center justify-center font-black text-[10px] border-2 border-black z-30 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">?</div>
             `;
             
             container.appendChild(el);
             
             const terminal = document.getElementById('system-status');
-            terminal.innerText = `> DEPLOYING SKU: ${name.toUpperCase()}_`;
+            terminal.innerText = `> DISPENSING: ${skuName}_`;
             gsap.fromTo(terminal, {opacity: 0}, {opacity: 1, duration: 0.2});
         };
 
